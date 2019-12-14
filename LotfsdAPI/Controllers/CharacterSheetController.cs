@@ -11,9 +11,9 @@ namespace LotfsdAPI.Controllers
   [Route("[controller]")]
   public class CharacterSheetController : ControllerBase
   {
-    private readonly ILogger<WeatherForecastController> _logger;
+    private readonly ILogger<CharacterSheetController> _logger;
 
-    public CharacterSheetController(ILogger<WeatherForecastController> logger)
+    public CharacterSheetController(ILogger<CharacterSheetController> logger)
     {
       _logger = logger;
     }
