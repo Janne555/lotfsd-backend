@@ -18,6 +18,9 @@ namespace LotfsdAPI.Services
     public List<CharacterSheet> Get() =>
       _characterSheets.Find(book => true).ToList();
 
+    public CharacterSheet Get(string id) =>
+      _characterSheets.Find((cs => cs.Id == id)).FirstOrDefault();
+
     public CharacterSheet Create(CharacterSheet cs)
     {
       _characterSheets.InsertOne(cs);
