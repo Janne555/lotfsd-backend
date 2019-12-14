@@ -1,6 +1,6 @@
 using System;
 
-namespace lotfsd_api
+namespace LotfsdAPI
 {
     public class WeatherForecast
     {
