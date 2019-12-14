@@ -31,8 +31,9 @@ namespace LotfsdAPI
                 Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp =>
             {
-                var foo = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-                return foo;
+                var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+                conf.ConnectionString = Configuration["dbconnection"];
+                return conf;
             });
             services.AddControllers();
         }

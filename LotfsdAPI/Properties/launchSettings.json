@@ -20,7 +20,7 @@
     "LotfsdAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "charactersheet",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

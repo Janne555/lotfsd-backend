@@ -5,9 +5,11 @@ namespace LotfsdAPI.Models
 {
     public class CharacterSheet
     {
-        [BsonID]
-        [BsonRepresentation(BsonType.ObjectID)]
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+
+        public string Name { get; set; }
 
 
     }
