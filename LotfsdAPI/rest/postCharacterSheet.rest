@@ -2,5 +2,5 @@ POST https://localhost:5001/charactersheet
 Content-Type: application/json
 
 {
-  "name": "hahmo"
+  "name": "asd"
 }
