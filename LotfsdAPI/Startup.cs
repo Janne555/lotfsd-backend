@@ -30,6 +30,7 @@ namespace LotfsdAPI
     {
       services.Configure<DatabaseSettings>(
           Configuration.GetSection(nameof(DatabaseSettings)));
+
       services.AddSingleton<IDatabaseSettings>(sp =>
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
@@ -41,6 +42,8 @@ namespace LotfsdAPI
 
       services.AddControllers()
         .AddNewtonsoftJson(Options => Options.UseMemberCasing());
+
+      services.AddIdentityCore<string>(options => { });
 
       services.AddControllers();
     }
