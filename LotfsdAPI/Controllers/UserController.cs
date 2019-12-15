@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,10 @@ using LotfsdAPI.Models;
 using LotfsdAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace LotfsdAPI.Controllers
 {
@@ -18,11 +23,13 @@ namespace LotfsdAPI.Controllers
   {
     private readonly UserService _userService;
     private readonly UserManager<User> _userManager;
+    private readonly string _secret;
 
-    public UserController(UserService userService, UserManager<User> userManager)
+    public UserController(UserService userService, UserManager<User> userManager, IDatabaseSettings dbsettings)
     {
       _userService = userService;
       _userManager = userManager;
+      _secret = dbsettings.Secret;
     }
 
 
@@ -45,6 +52,34 @@ namespace LotfsdAPI.Controllers
           var result = await _userManager.CreateAsync(user, model.Password);
         }
         return Ok();
+      }
+      return BadRequest();
+    }
+
+    [Route("/[controller]/login")]
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(LoginModel model)
+    {
+      if (ModelState.IsValid)
+      {
+        var user = await _userManager.FindByNameAsync(model.Username);
+        if (user == null && await _userManager.CheckPasswordAsync(user, model.Password))
+        {
+          var tokenHandler = new JwtSecurityTokenHandler();
+          var key = Encoding.ASCII.GetBytes(_secret);
+          var tokenDescriptor = new SecurityTokenDescriptor
+          {
+            Subject = new ClaimsIdentity(new Claim[]
+              {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+              }),
+            Expires = DateTime.UtcNow.AddDays(7),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+          };
+          var token = tokenHandler.CreateToken(tokenDescriptor);
+          return Ok(token);
+        }
       }
       return BadRequest();
     }

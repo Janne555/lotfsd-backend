@@ -14,6 +14,8 @@ using Microsoft.Extensions.Options;
 using LotfsdAPI.Models;
 using LotfsdAPI.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 
 namespace LotfsdAPI
@@ -37,6 +39,7 @@ namespace LotfsdAPI
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
         conf.ConnectionString = Configuration["dbconnection"];
+        conf.Secret = Configuration["secret"];
         return conf;
       });
 
@@ -49,6 +52,10 @@ namespace LotfsdAPI
 
       services.AddIdentityCore<User>(options => { });
       services.AddScoped<IUserStore<User>, UserStore>();
+
+
+      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer();
 
       services.AddControllers();
     }

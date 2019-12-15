@@ -7,6 +7,7 @@ namespace LotfsdAPI.Models
     public string ConnectionString { get; set; }
     public string CharacterSheetCollectionName { get; set; }
     public string UserCollectionName { get; set; }
+    public string Secret { get; set; }
   }
 
   public interface IDatabaseSettings
@@ -18,5 +19,7 @@ namespace LotfsdAPI.Models
     string CharacterSheetCollectionName { get; set; }
 
     string UserCollectionName { get; set; }
+
+    string Secret { get; set; }
   }
 }
