@@ -58,8 +58,7 @@ namespace LotfsdAPI.Controllers
     public async Task<ActionResult<CharacterSheet>> Create(CharacterSheet characterSheet)
     {
       var userId = User.FindFirst(ClaimTypes.Name).Value;
-      var user = await _userManager.FindByIdAsync(userId);
-      characterSheet.Owner = user;
+      characterSheet.Owner = userId;
       await _charactersheetService.Create(characterSheet);
       return CreatedAtRoute("GetCharacterSheet", new { id = characterSheet.Id.ToString() }, characterSheet);
     }
