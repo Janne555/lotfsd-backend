@@ -14,7 +14,7 @@ namespace LotfsdAPI.Services
     {
       _users = mongoService.GetCollection<User>(databaseSettings.UserCollectionName);
       var options = new CreateIndexOptions() { Unique = true };
-      var field = new StringFieldDefinition<User>("UserName");
+      var field = new StringFieldDefinition<User>("NormalizedUserName");
       var indexDefinition = new IndexKeysDefinitionBuilder<User>().Ascending(field);
       var indexModel = new CreateIndexModel<User>(indexDefinition, options);
       _users.Indexes.CreateOne(indexModel);
@@ -28,8 +28,9 @@ namespace LotfsdAPI.Services
 
     public async Task<User> FindUserByUsernameAsync(string username)
     {
-      var cursor = await _users.FindAsync(u => u.UserName == username);
-      return await cursor.FirstOrDefaultAsync();
+      var cursor = await _users.FindAsync(u => u.NormalizedUserName == username);
+      var user = await cursor.FirstOrDefaultAsync();
+      return user;
     }
 
     public async Task CreateUserAsync(User user, CancellationToken cancellationToken)

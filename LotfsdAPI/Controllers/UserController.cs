@@ -59,29 +59,26 @@ namespace LotfsdAPI.Controllers
     [Route("/[controller]/login")]
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> Login(LoginModel model)
+    public async Task<IActionResult> Login([FromBody]LoginModel model)
     {
-      if (ModelState.IsValid)
+      var user = await _userManager.FindByNameAsync(model.Username);
+      if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
       {
-        var user = await _userManager.FindByNameAsync(model.Username);
-        if (user == null && await _userManager.CheckPasswordAsync(user, model.Password))
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_secret);
+        var tokenDescriptor = new SecurityTokenDescriptor
         {
-          var tokenHandler = new JwtSecurityTokenHandler();
-          var key = Encoding.ASCII.GetBytes(_secret);
-          var tokenDescriptor = new SecurityTokenDescriptor
-          {
-            Subject = new ClaimsIdentity(new Claim[]
-              {
+          Subject = new ClaimsIdentity(new Claim[]
+            {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
-              }),
-            Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-          };
-          var token = tokenHandler.CreateToken(tokenDescriptor);
-          return Ok(token);
-        }
+            }),
+          Expires = DateTime.UtcNow.AddDays(7),
+          SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return Ok(tokenHandler.WriteToken(token));
       }
-      return BadRequest();
+      return Ok("nada");
     }
   }
 }

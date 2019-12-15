@@ -13,8 +13,11 @@ namespace LotfsdAPI.Services
       _characterSheets = mongoService.GetCollection<CharacterSheet>(settings.CharacterSheetCollectionName);
     }
 
-    public List<CharacterSheet> Get() =>
-      _characterSheets.Find(book => true).ToList();
+    public List<CharacterSheet> Get()
+    {
+      var characters = _characterSheets.Find(book => true).ToList();
+      return characters;
+    }
 
     public CharacterSheet Get(string id) =>
       _characterSheets.Find((cs => cs.Id == id)).FirstOrDefault();

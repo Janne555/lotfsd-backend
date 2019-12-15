@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LotfsdAPI.Models;
 using LotfsdAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace LotfsdAPI.Controllers
 {
   [ApiController]
+  [AllowAnonymous]
   [Route("[controller]")]
   public class CharacterSheetController : ControllerBase
   {
