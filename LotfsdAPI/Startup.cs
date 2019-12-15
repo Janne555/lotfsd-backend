@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using LotfsdAPI.Models;
 using LotfsdAPI.Services;
+using Microsoft.AspNetCore.Identity;
+
 
 namespace LotfsdAPI
 {
@@ -45,7 +47,8 @@ namespace LotfsdAPI
       services.AddControllers()
         .AddNewtonsoftJson(Options => Options.UseMemberCasing());
 
-      // services.AddIdentityCore<string>(options => { });
+      services.AddIdentityCore<User>(options => { });
+      services.AddScoped<IUserStore<User>, UserStore>();
 
       services.AddControllers();
     }
