@@ -50,7 +50,8 @@ namespace LotfsdAPI
       services.AddScoped<IUserStore<User>, UserStore>();
 
 
-      services.AddAuthentication(options => {
+      services.AddAuthentication(options =>
+      {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
       })
@@ -77,6 +78,11 @@ namespace LotfsdAPI
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
       app.UseHttpsRedirection();
 
