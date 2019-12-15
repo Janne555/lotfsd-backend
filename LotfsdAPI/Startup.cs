@@ -41,7 +41,7 @@ namespace LotfsdAPI
       });
 
       services.AddSingleton<MongoService>();
-
+      services.AddSingleton<UserService>();
       services.AddSingleton<CharacterSheetService>();
 
       services.AddControllers()
