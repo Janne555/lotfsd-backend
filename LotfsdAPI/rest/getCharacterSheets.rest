@@ -1,2 +1,2 @@
-GET http://localhost:5000/charactersheet
+GET http://localhost:5000/api/charactersheet
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjVkZjY0MWU5YTA2OGFkNGVjNzJhZTNlMyIsIm5iZiI6MTU3NjQxOTk1MCwiZXhwIjoxNTc3MDI0NzUwLCJpYXQiOjE1NzY0MTk5NTB9.bMVp79uPikrIPfsq9_9GO6s08kKJVAWsX9R_2HV8HrY

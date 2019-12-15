@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Web;
 
 namespace LotfsdAPI
 {
@@ -49,7 +50,10 @@ namespace LotfsdAPI
       services.AddScoped<IUserStore<User>, UserStore>();
 
 
-      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+      services.AddAuthentication(options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
         .AddJwtBearer(options =>
         {
           options.RequireHttpsMetadata = false;

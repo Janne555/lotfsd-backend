@@ -14,18 +14,21 @@ namespace LotfsdAPI.Services
       _characterSheets = mongoService.GetCollection<CharacterSheet>(settings.CharacterSheetCollectionName);
     }
 
-    public async Task<List<CharacterSheet>> Get()
+    public async Task<List<CharacterSheet>> Get(string userId)
     {
-      var characters = await _characterSheets.FindAsync(book => true);
+      var characters = await _characterSheets.FindAsync(cs => cs.Owner.Id == userId);
       return await characters.ToListAsync();
     }
 
-    public CharacterSheet Get(string id) =>
-      _characterSheets.Find((cs => cs.Id == id)).FirstOrDefault();
-
-    public CharacterSheet Create(CharacterSheet cs)
+    public async Task<CharacterSheet> Get(string userId, string id)
     {
-      _characterSheets.InsertOne(cs);
+      var cursor = await _characterSheets.FindAsync((cs => cs.Id == id));
+      return await cursor.FirstOrDefaultAsync();
+    }
+
+    public async Task<CharacterSheet> Create(CharacterSheet cs)
+    {
+      await _characterSheets.InsertOneAsync(cs);
       return cs;
     }
   }

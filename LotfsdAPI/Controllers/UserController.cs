@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace LotfsdAPI.Controllers
 {
@@ -31,8 +30,7 @@ namespace LotfsdAPI.Controllers
 
 
 
-    [Route("/api/[controller]/register")]
-    [HttpPost]
+    [HttpPost("register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register(RegisterModel model)
     {
@@ -53,7 +51,7 @@ namespace LotfsdAPI.Controllers
       return BadRequest();
     }
 
-    [Route("/api/[controller]/login")]
+    [Route("login")]
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody]LoginModel model)
