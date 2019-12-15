@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace LotfsdAPI.Controllers
 {
   [ApiController]
-  [AllowAnonymous]
+  [Authorize]
   [Route("[controller]")]
   public class CharacterSheetController : ControllerBase
   {

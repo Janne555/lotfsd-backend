@@ -15,8 +15,8 @@ using LotfsdAPI.Models;
 using LotfsdAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace LotfsdAPI
 {
@@ -32,6 +32,8 @@ namespace LotfsdAPI
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      string key = Configuration["secret"];
+
       services.Configure<DatabaseSettings>(
           Configuration.GetSection(nameof(DatabaseSettings)));
 
@@ -39,7 +41,7 @@ namespace LotfsdAPI
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
         conf.ConnectionString = Configuration["dbconnection"];
-        conf.Secret = Configuration["secret"];
+        conf.Secret = key;
         return conf;
       });
 
@@ -55,7 +57,18 @@ namespace LotfsdAPI
 
 
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer();
+        .AddJwtBearer(options =>
+        {
+          options.RequireHttpsMetadata = false;
+          options.SaveToken = true;
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+          };
+        });
 
       services.AddControllers();
     }
@@ -72,6 +85,7 @@ namespace LotfsdAPI
 
       app.UseRouting();
 
+      app.UseAuthentication();
       app.UseAuthorization();
 
       app.UseEndpoints(endpoints =>
