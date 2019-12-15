@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LotfsdAPI.Models;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
 namespace LotfsdAPI.Services
 {
@@ -13,10 +14,10 @@ namespace LotfsdAPI.Services
       _characterSheets = mongoService.GetCollection<CharacterSheet>(settings.CharacterSheetCollectionName);
     }
 
-    public List<CharacterSheet> Get()
+    public async Task<List<CharacterSheet>> Get()
     {
-      var characters = _characterSheets.Find(book => true).ToList();
-      return characters;
+      var characters = await _characterSheets.FindAsync(book => true);
+      return await characters.ToListAsync();
     }
 
     public CharacterSheet Get(string id) =>

@@ -1,24 +1,21 @@
 using System.Security.Claims;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using LotfsdAPI.Models;
 using LotfsdAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace LotfsdAPI.Controllers
 {
   [ApiController]
   [Authorize]
-  [Route("[controller]")]
+  [Route("api/[controller]")]
   public class UserController : ControllerBase
   {
     private readonly UserService _userService;
@@ -34,7 +31,7 @@ namespace LotfsdAPI.Controllers
 
 
 
-    [Route("/[controller]/register")]
+    [Route("/api/[controller]/register")]
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Register(RegisterModel model)
@@ -56,7 +53,7 @@ namespace LotfsdAPI.Controllers
       return BadRequest();
     }
 
-    [Route("/[controller]/login")]
+    [Route("/api/[controller]/login")]
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody]LoginModel model)
@@ -78,7 +75,7 @@ namespace LotfsdAPI.Controllers
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return Ok(tokenHandler.WriteToken(token));
       }
-      return Ok("nada");
+      return Ok();
     }
   }
 }

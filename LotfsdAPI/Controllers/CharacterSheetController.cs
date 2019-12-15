@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using LotfsdAPI.Models;
 using LotfsdAPI.Services;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Threading.Tasks;
 
 namespace LotfsdAPI.Controllers
 {
@@ -26,9 +24,9 @@ namespace LotfsdAPI.Controllers
     }
 
     [HttpGet]
-    public ActionResult<List<CharacterSheet>> Get()
+    public async Task<ActionResult<List<CharacterSheet>>> Get()
     {
-      return _charactersheetService.Get();
+      return await _charactersheetService.Get();
     }
 
 
