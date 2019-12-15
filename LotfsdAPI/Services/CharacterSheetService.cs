@@ -8,11 +8,9 @@ namespace LotfsdAPI.Services
   {
     private readonly IMongoCollection<CharacterSheet> _characterSheets;
 
-    public CharacterSheetService(IDatabaseSettings settings)
+    public CharacterSheetService(MongoService mongoService, IDatabaseSettings settings)
     {
-      var client = new MongoClient(settings.ConnectionString);
-      var database = client.GetDatabase(settings.DatabaseName);
-      _characterSheets = database.GetCollection<CharacterSheet>(settings.CharacterSheetCollectionName);
+      _characterSheets = mongoService.GetCollection<CharacterSheet>(settings.CharacterSheetCollectionName);
     }
 
     public List<CharacterSheet> Get() =>

@@ -38,12 +38,14 @@ namespace LotfsdAPI
         return conf;
       });
 
+      services.AddSingleton<MongoService>();
+
       services.AddSingleton<CharacterSheetService>();
 
       services.AddControllers()
         .AddNewtonsoftJson(Options => Options.UseMemberCasing());
 
-      services.AddIdentityCore<string>(options => { });
+      // services.AddIdentityCore<string>(options => { });
 
       services.AddControllers();
     }
