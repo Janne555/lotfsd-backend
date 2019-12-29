@@ -4,10 +4,14 @@ using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 using LotfsdAPI.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace LotfsdAPI.Controllers
 {
   [Route("[controller]")]
+  [Authorize(AuthenticationSchemes=JwtBearerDefaults.AuthenticationScheme)]
   public class GraphQLController : Controller
   {
     private readonly IDocumentExecuter _documentExcecuter;
@@ -22,11 +26,16 @@ namespace LotfsdAPI.Controllers
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] GraphQLQuery query)
     {
-      if (query == null) {
+      if (query == null)
+      {
         throw new ArgumentNullException(nameof(query));
       }
 
+      var userId = User.FindFirst(ClaimTypes.Name).Value;
+
       var inputs = query.Variables.ToInputs();
+      inputs.Add("userId", userId);
+
       var executionOptions = new ExecutionOptions
       {
         Schema = _schema,
