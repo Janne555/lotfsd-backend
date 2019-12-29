@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace LotfsdAPI.Controllers
 {
   [Route("[controller]")]
-  [Authorize(AuthenticationSchemes=JwtBearerDefaults.AuthenticationScheme)]
+  [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
   public class GraphQLController : Controller
   {
     private readonly IDocumentExecuter _documentExcecuter;
@@ -33,11 +33,16 @@ namespace LotfsdAPI.Controllers
 
       var inputs = query.Variables.ToInputs();
 
+
       var executionOptions = new ExecutionOptions
       {
         Schema = _schema,
         Query = query.Query,
-        Inputs = inputs
+        Inputs = inputs,
+        UserContext = new GraphQLUserContext
+        {
+          User = User
+        }
       };
 
 

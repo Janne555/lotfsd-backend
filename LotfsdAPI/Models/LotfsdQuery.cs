@@ -1,12 +1,13 @@
 using GraphQL.Types;
 using LotfsdAPI.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace LotfsdAPI.Models
 {
   public class LotfsdQuery : ObjectGraphType
   {
-    public LotfsdQuery(CharacterSheetService characterSheetService)
+    public LotfsdQuery(CharacterSheetService characterSheetService, IHttpContextAccessor contextAccessor)
     {
       Field<CharacterSheetType>(
         "characterSheet",
@@ -15,8 +16,7 @@ namespace LotfsdAPI.Models
 
       Field<ListGraphType<CharacterSheetType>>(
         "characterSheets",
-        resolve: context => characterSheetService.GetAll());
-
+        resolve: context => characterSheetService.Get(contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value));
     }
   }
 }

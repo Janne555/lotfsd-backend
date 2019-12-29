@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Web;
 using GraphiQl;
 using GraphQL;
 using GraphQL.Types;
@@ -41,6 +40,8 @@ namespace LotfsdAPI
         conf.Secret = key;
         return conf;
       });
+
+      services.AddHttpContextAccessor();
 
       services.AddSingleton<MongoService>();
       services.AddSingleton<UserService>();

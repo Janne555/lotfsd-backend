@@ -19,13 +19,6 @@ namespace LotfsdAPI.Services
       var characters = await _characterSheets.FindAsync(cs => cs.Owner == userId);
       return await characters.ToListAsync();
     }
-
-    public async Task<List<CharacterSheet>> GetAll()
-    {
-      var characters = await _characterSheets.FindAsync(cs => true);
-      return await characters.ToListAsync();
-    }
-
     public async Task<CharacterSheet> Get(string userId, string id)
     {
       var cursor = await _characterSheets.FindAsync((cs => cs.Id == id));
