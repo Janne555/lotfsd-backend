@@ -31,10 +31,7 @@ namespace LotfsdAPI.Controllers
         throw new ArgumentNullException(nameof(query));
       }
 
-      var userId = User.FindFirst(ClaimTypes.Name).Value;
-
       var inputs = query.Variables.ToInputs();
-      inputs.Add("userId", userId);
 
       var executionOptions = new ExecutionOptions
       {

@@ -15,8 +15,7 @@ namespace LotfsdAPI.Models
 
       Field<ListGraphType<CharacterSheetType>>(
         "characterSheets",
-        arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "userId" }),
-        resolve: context => characterSheetService.Get("userId"));
+        resolve: context => characterSheetService.GetAll());
 
     }
   }
