@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Web;
+using GraphiQl;
+using GraphQL;
+using GraphQL.Types;
 
 namespace LotfsdAPI
 {
@@ -49,7 +52,6 @@ namespace LotfsdAPI
       services.AddIdentityCore<User>(options => { });
       services.AddScoped<IUserStore<User>, UserStore>();
 
-
       services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -68,6 +70,12 @@ namespace LotfsdAPI
           };
         });
 
+      services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+      services.AddSingleton<LotfsdQuery>();
+      services.AddSingleton<CharacterSheetType>();
+      var sps = services.BuildServiceProvider();
+      services.AddSingleton<ISchema>(new LotfsdSchema(new FuncDependencyResolver(type => sps.GetService(type))));
+
       services.AddControllers();
     }
 
@@ -78,6 +86,8 @@ namespace LotfsdAPI
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.UseGraphiQl();
 
       app.UseCors(x => x
                 .AllowAnyOrigin()

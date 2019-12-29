@@ -13,6 +13,5 @@ namespace LotfsdAPI.Models
     public string Name { get; set; }
     [BsonRepresentation(BsonType.ObjectId)]
     public string Owner { get; set; }
-
   }
 }
