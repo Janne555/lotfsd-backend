@@ -4,19 +4,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using LotfsdAPI.Models;
 using LotfsdAPI.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using GraphiQl;
-using GraphQL;
 using GraphQL.Types;
+using GraphQL.Server;
+using GraphQL;
 
 namespace LotfsdAPI
 {
   public class Startup
+
   {
     public Startup(IConfiguration configuration)
     {
@@ -28,6 +30,11 @@ namespace LotfsdAPI
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.Configure<KestrelServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
+
       string key = Configuration["secret"];
 
       services.Configure<DatabaseSettings>(
@@ -71,11 +78,16 @@ namespace LotfsdAPI
           };
         });
 
-      services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
       services.AddSingleton<LotfsdQuery>();
       services.AddSingleton<CharacterSheetType>();
-      var sps = services.BuildServiceProvider();
-      services.AddSingleton<ISchema>(new LotfsdSchema(new FuncDependencyResolver(type => sps.GetService(type))));
+      services.AddSingleton<ISchema, LotfsdSchema>();
+
+      services.AddGraphQL(_ =>
+      {
+        _.EnableMetrics = true;
+        _.ExposeExceptions = true;
+      })
+        .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
 
       services.AddControllers();
     }
@@ -88,7 +100,7 @@ namespace LotfsdAPI
         app.UseDeveloperExceptionPage();
       }
 
-      app.UseGraphiQl();
+      app.UseGraphQL<ISchema>();
 
       app.UseCors(x => x
                 .AllowAnyOrigin()

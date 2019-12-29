@@ -17,6 +17,10 @@ namespace LotfsdAPI.Models
       Field<ListGraphType<CharacterSheetType>>(
         "characterSheets",
         resolve: context => characterSheetService.Get(contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value));
+
+      Field<CharacterSheetType>(
+        "foo",
+        resolve: context => new CharacterSheet { Id = "foo", Name = "bar", Owner = "baz" });
     }
   }
 }
