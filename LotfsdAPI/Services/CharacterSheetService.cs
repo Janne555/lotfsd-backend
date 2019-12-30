@@ -21,13 +21,13 @@ namespace LotfsdAPI.Services
     }
     public async Task<CharacterSheet> Get(string userId, string id)
     {
-      var cursor = await _characterSheets.FindAsync((cs => cs.Id == id));
+      var cursor = await _characterSheets.FindAsync((cs => cs.Id.ToString() == id));
       return await cursor.FirstOrDefaultAsync();
     }
 
     public async Task<CharacterSheet> GetGraphQL(string id)
     {
-      var cursor = await _characterSheets.FindAsync((cs => cs.Id == id));
+      var cursor = await _characterSheets.FindAsync((cs => cs.Id.ToString() == id));
       return await cursor.FirstOrDefaultAsync();
     }
 

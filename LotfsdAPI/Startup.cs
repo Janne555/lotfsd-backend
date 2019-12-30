@@ -14,6 +14,7 @@ using System.Text;
 using GraphQL.Types;
 using GraphQL.Server;
 using GraphQL;
+using GraphQL.Server.Ui.GraphiQL;
 
 namespace LotfsdAPI
 {
@@ -79,7 +80,9 @@ namespace LotfsdAPI
         });
 
       services.AddSingleton<LotfsdQuery>();
+      services.AddSingleton<LotfsdMutation>();
       services.AddSingleton<CharacterSheetType>();
+      services.AddSingleton<CharacterSheetInputType>();
       services.AddSingleton<ISchema, LotfsdSchema>();
 
       services.AddGraphQL(_ =>
@@ -118,6 +121,8 @@ namespace LotfsdAPI
       {
         endpoints.MapControllers();
       });
+
+      app.UseGraphiQLServer(new GraphiQLOptions());
     }
   }
 }

@@ -9,6 +9,7 @@ namespace LotfsdAPI.Models
     public LotfsdSchema(IServiceProvider provider) : base(provider)
     {
       Query = provider.GetRequiredService<LotfsdQuery>();
+      Mutation = provider.GetRequiredService<LotfsdMutation>();
     }
   }
 }
