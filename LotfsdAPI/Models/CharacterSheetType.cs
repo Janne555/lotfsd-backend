@@ -7,6 +7,7 @@ namespace LotfsdAPI.Models
   {
     public CharacterSheetType()
     {
+      Name = "CharacterSheet";
       Field(x => x.Id);
       Field(x => x.Name);
     }

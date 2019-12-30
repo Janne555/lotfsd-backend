@@ -9,6 +9,8 @@ namespace LotfsdAPI.Models
   {
     public LotfsdQuery(CharacterSheetService characterSheetService, IHttpContextAccessor contextAccessor)
     {
+      Name = "Query";
+
       Field<CharacterSheetType>(
         "characterSheet",
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
