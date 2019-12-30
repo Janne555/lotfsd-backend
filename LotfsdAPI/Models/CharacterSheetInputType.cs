@@ -8,7 +8,6 @@ namespace LotfsdAPI.Models
     public CharacterSheetInputType()
     {
       Name = "CharacterSheetInput";
-      Field(x => x.Id);
       Field(x => x.Name);
     }
   }
