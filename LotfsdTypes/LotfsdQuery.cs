@@ -8,7 +8,7 @@ namespace Lotfsd.Types.Models
 {
   public class LotfsdQuery : ObjectGraphType
   {
-    public LotfsdQuery(CharacterSheetService characterSheetService, IHttpContextAccessor contextAccessor)
+    public LotfsdQuery(CharacterSheetService characterSheetService)
     {
       Name = "Query";
 
@@ -19,7 +19,11 @@ namespace Lotfsd.Types.Models
 
       Field<ListGraphType<CharacterSheetType>>(
         "characterSheets",
-        resolve: context => characterSheetService.Get(contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name).Value));
+        resolve: context =>
+        {
+          var userContext = context.UserContext as GraphQLUserContext;
+          return characterSheetService.Get(userContext.User.FindFirst(ClaimTypes.Name).Value);
+        });
 
       Field<CharacterSheetType>(
         "foo",

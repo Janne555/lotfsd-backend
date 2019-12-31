@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GraphQL.Types;
 using GraphQL.Server;
-using GraphQL.Server.Ui.GraphiQL;
 using Lotfsd.Types;
 using Lotfsd.Types.Models;
 
@@ -95,6 +94,15 @@ namespace Lotfsd.API
         .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
 
       services.AddControllers();
+
+      ConfigureGraphQLTypes(services);
+    }
+
+    public void ConfigureGraphQLTypes(IServiceCollection services)
+    {
+      services.AddSingleton<CharacterSheetType>()
+        .AddSingleton<CharacterSheetInputType>()
+        .AddSingleton<AttributesType>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,8 +136,6 @@ namespace Lotfsd.API
       {
         endpoints.MapControllers();
       });
-
-      app.UseGraphiQLServer(new GraphiQLOptions());
     }
   }
 }
