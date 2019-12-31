@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using GraphQL.Authorization;
 using System.Collections.Generic;
 
 namespace Lotfsd.Types.Models

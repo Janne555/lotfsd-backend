@@ -1,7 +1,8 @@
 using System;
 using GraphQL.Types;
+using Lotfsd.Data.Models;
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.Types.Models
 {
   public class CharacterSheetType : ObjectGraphType<CharacterSheet>
   {

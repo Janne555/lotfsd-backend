@@ -1,8 +1,7 @@
-using Lotfsd.API.Models;
+using Lotfsd.Data.Models;
 using MongoDB.Driver;
-using System.Collections.Generic;
 
-namespace Lotfsd.API.Services
+namespace Lotfsd.Data
 {
   public class MongoService
   {

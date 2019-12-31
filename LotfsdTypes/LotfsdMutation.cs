@@ -1,11 +1,11 @@
-using GraphQL;
-using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using GraphQL.Types;
-using LotfsdAPI.Services;
+using Lotfsd.Data;
+using Lotfsd.Data.Models;
 using System.Security.Claims;
+using Lotfsd.Types.Models;
 
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.Types
 {
   public class LotfsdMutation : ObjectGraphType
   {

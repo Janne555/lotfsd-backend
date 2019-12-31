@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LotfsdAPI", "LotfsdAPI\LotfsdAPI.csproj", "{424AE1FE-E5BB-4A09-B906-49F24DF54252}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LotfsdTypes", "LotfsdTypes\LotfsdTypes.shproj", "{B0D6202F-BF62-4FD0-AD85-605D8010AED2}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "LotfsdData", "LotfsdData\LotfsdData.shproj", "{67B85060-3B77-47B0-9C1A-7F8E5F82684A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

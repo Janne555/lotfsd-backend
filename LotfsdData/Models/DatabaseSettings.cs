@@ -1,4 +1,4 @@
-﻿namespace Lotfsd.API.Models
+﻿namespace Lotfsd.Data.Models
 {
   public class DatabaseSettings : IDatabaseSettings
   {

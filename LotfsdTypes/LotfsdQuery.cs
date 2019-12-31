@@ -1,9 +1,10 @@
 using GraphQL.Types;
-using LotfsdAPI.Services;
+using Lotfsd.Data;
+using Lotfsd.Data.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.Types.Models
 {
   public class LotfsdQuery : ObjectGraphType
   {
