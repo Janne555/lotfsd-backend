@@ -29,7 +29,9 @@ namespace Lotfsd.Types.Models
       Field<CommonActivitiesType>("CommonActivities");
       Field<WalletType>("Wallet");
 
-
+      Field<ListGraphType<EffectType>>("Effect");
+      Field<ListGraphType<PropertyType>>("Properties");
+      Field<ListGraphType<ItemInstanceType>>("Inventory");
     }
   }
 

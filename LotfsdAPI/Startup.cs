@@ -103,7 +103,21 @@ namespace Lotfsd.API
       services.AddSingleton<CharacterSheetType>()
         .AddSingleton<CharacterSheetInputType>()
         .AddSingleton<AttributesType>()
-        .AddSingleton<AttributesInputType>();
+        .AddSingleton<AttributeModifiersType>()
+        .AddSingleton<SavingThrowsType>()
+        .AddSingleton<CommonActivitiesType>()
+        .AddSingleton<WalletType>()
+        .AddSingleton<EffectType>()
+        .AddSingleton<PropertyType>()
+        .AddSingleton<ItemInstanceType>()
+        .AddSingleton<AttributesInputType>()
+        .AddSingleton<AttributeModifiersInputType>()
+        .AddSingleton<SavingThrowsInputType>()
+        .AddSingleton<CommonActivitiesInputType>()
+        .AddSingleton<WalletInputType>()
+        .AddSingleton<EffectInputType>()
+        .AddSingleton<PropertyInputType>()
+        .AddSingleton<ItemInstanceInputType>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
