@@ -103,7 +103,7 @@ namespace LotfsdAPI
         app.UseDeveloperExceptionPage();
       }
 
-      app.Map("/graphql", branch =>
+      app.Map("/graphql", branch => //https://github.com/graphql-dotnet/server/pull/158#issuecomment-431381490
       {
         branch.UseAuthentication();
         branch.UseAuthorization();
