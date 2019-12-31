@@ -29,5 +29,6 @@
     <Compile Remove="Models\GraphQLQuery.cs" />
     <Compile Remove="Controllers\CharacterSheetController.cs" />
   </ItemGroup>
+  <Import Project="..\LotfsdData\LotfsdData.projitems" Label="Shared" Condition="Exists('..\LotfsdData\LotfsdData.projitems')" />
   <Import Project="..\LotfsdTypes\LotfsdTypes.projitems" Label="Shared" Condition="Exists('..\LotfsdTypes\LotfsdTypes.projitems')" />
 </Project>

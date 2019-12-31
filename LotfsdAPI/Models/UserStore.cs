@@ -1,7 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Lotfsd.API.Services;
+using Lotfsd.Data;
+using Lotfsd.Data.Models;
 
 namespace Lotfsd.API.Models
 {

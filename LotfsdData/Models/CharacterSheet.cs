@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.Types.Models
 {
   public class CharacterSheet
   {

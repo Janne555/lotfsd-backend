@@ -3,12 +3,13 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Lotfsd.API.Models;
-using Lotfsd.API.Services;
+using Lotfsd.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Lotfsd.Data.Models;
 
 namespace Lotfsd.API.Controllers
 {
