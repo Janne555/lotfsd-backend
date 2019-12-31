@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using LotfsdAPI.Services;
+using Lotfsd.API.Services;
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.API.Models
 {
   public class UserStore : IUserStore<User>, IUserPasswordStore<User>
   {

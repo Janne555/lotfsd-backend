@@ -5,18 +5,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using LotfsdAPI.Models;
-using LotfsdAPI.Services;
+using Lotfsd.API.Models;
+using Lotfsd.API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GraphQL.Types;
 using GraphQL.Server;
-using GraphQL;
 using GraphQL.Server.Ui.GraphiQL;
+using Lotfsd.Types;
+using Lotfsd.Types.Models;
 
-namespace LotfsdAPI
+namespace Lotfsd.API
 {
   public class Startup
 

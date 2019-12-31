@@ -1,10 +1,10 @@
 using System.Threading;
 using System;
 using MongoDB.Driver;
-using LotfsdAPI.Models;
+using Lotfsd.API.Models;
 using System.Threading.Tasks;
 
-namespace LotfsdAPI.Services
+namespace Lotfsd.API.Services
 {
   public class UserService
   {

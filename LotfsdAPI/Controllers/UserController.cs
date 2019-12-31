@@ -2,15 +2,15 @@ using System.Security.Claims;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LotfsdAPI.Models;
-using LotfsdAPI.Services;
+using Lotfsd.API.Models;
+using Lotfsd.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace LotfsdAPI.Controllers
+namespace Lotfsd.API.Controllers
 {
   [ApiController]
   [Authorize]

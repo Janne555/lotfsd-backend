@@ -1,5 +1,4 @@
-﻿using System;
-namespace LotfsdAPI.Models
+﻿namespace Lotfsd.API.Models
 {
   public class DatabaseSettings : IDatabaseSettings
   {

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using LotfsdAPI.Models;
+using Lotfsd.API.Models;
 using MongoDB.Driver;
 using System.Threading.Tasks;
+using Lotfsd.Types.Models;
 
-namespace LotfsdAPI.Services
+namespace Lotfsd.API.Services
 {
   public class CharacterSheetService
   {
