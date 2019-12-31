@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace Lotfsd.Data.Models
 {
@@ -8,12 +9,30 @@ namespace Lotfsd.Data.Models
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
-
     public string Name { get; set; }
+
     [BsonRepresentation(BsonType.ObjectId)]
     public string Owner { get; set; }
+    public int Experience { get; set; }
+    public string ClassName { get; set; }
+    public string Race { get; set; }
+    public int Age { get; set; }
+    public string Gender { get; set; }
+    public string Alignment { get; set; }
+    public string Player { get; set; }
+    public int AttackBonus { get; set; }
+    public int CurrentHp { get; set; }
+    public int MaxHp { get; set; }
+    public int SurpriseChance { get; set; }
 
-    //public Attributes Attributes { get; set; }
+    public Attributes Attributes { get; set; }
+    public AttributeModifiers AttributeModifiers { get; set; }
+    public SavingThrows SavingThrows { get; set; }
+    public CommonActivities CommonActivities { get; set; }
+    public Wallet Wallet { get; set; }
+
+    public List<ItemInstance> Inventory { get; set; }
+    public List<Effect> Effects { get; set; }
   }
 
   public class Attributes
@@ -64,5 +83,20 @@ namespace Lotfsd.Data.Models
     public int Copper { get; set; }
     public int Silver { get; set; }
     public int Gold { get; set; }
+  }
+
+  public class ItemInstance
+  {
+    public string itemId;
+    public string instanceId;
+    public bool equipped;
+  }
+
+  public class Effect
+  {
+    public string Type { get; set; }
+    public string Target { get; set; }
+    public string Method { get; set; }
+    public int Value { get; set; }
   }
 }

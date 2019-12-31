@@ -102,7 +102,8 @@ namespace Lotfsd.API
     {
       services.AddSingleton<CharacterSheetType>()
         .AddSingleton<CharacterSheetInputType>()
-        .AddSingleton<AttributesType>();
+        .AddSingleton<AttributesType>()
+        .AddSingleton<AttributesInputType>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
