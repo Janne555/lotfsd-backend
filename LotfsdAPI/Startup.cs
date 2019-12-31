@@ -103,7 +103,12 @@ namespace LotfsdAPI
         app.UseDeveloperExceptionPage();
       }
 
-      app.UseGraphQL<ISchema>();
+      app.Map("/graphql", branch =>
+      {
+        branch.UseAuthentication();
+        branch.UseAuthorization();
+        branch.UseGraphQL<ISchema>("");
+      });
 
       app.UseCors(x => x
                 .AllowAnyOrigin()

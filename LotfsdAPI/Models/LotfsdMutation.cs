@@ -2,7 +2,6 @@ using GraphQL;
 using GraphQL.Server.Transports.Subscriptions.Abstractions;
 using GraphQL.Types;
 using LotfsdAPI.Services;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 
@@ -10,7 +9,7 @@ namespace LotfsdAPI.Models
 {
   public class LotfsdMutation : ObjectGraphType
   {
-    public LotfsdMutation(CharacterSheetService characterSheetService, IHttpContextAccessor httpContextAccessor)
+    public LotfsdMutation(CharacterSheetService characterSheetService)
     {
       Name = "Mutation";
 
@@ -21,9 +20,9 @@ namespace LotfsdAPI.Models
           ),
         resolve: context =>
         {
+          var userContext = context.UserContext as GraphQLUserContext;
           var characterSheet = context.GetArgument<CharacterSheet>("characterSheet");
-          var user = httpContextAccessor.HttpContext.User;
-          characterSheet.Owner = user.FindFirst(ClaimTypes.Name).Value;
+          characterSheet.Owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
           return characterSheetService.Create(characterSheet);
         });
     }
