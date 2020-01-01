@@ -15,7 +15,11 @@ namespace Lotfsd.Types.Models
       Field<CharacterSheetType>(
         "characterSheet",
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
-        resolve: context => characterSheetService.GetGraphQL(context.GetArgument<string>("id")));
+        resolve: context =>
+          {
+            var userContext = context.UserContext as GraphQLUserContext;
+            return characterSheetService.Get(userContext.User.FindFirst(ClaimTypes.Name).Value, context.GetArgument<string>("id"));
+          });
 
       Field<ListGraphType<CharacterSheetType>>(
         "characterSheets",
