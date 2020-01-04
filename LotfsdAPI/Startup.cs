@@ -16,6 +16,9 @@ using GraphQL.Types;
 using GraphQL.Server;
 using Lotfsd.Types;
 using Lotfsd.Types.Models;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Lotfsd.API
 {
@@ -120,6 +123,14 @@ namespace Lotfsd.API
         .AddSingleton<ItemInstanceInputType>();
     }
 
+    private static void HandleBranch(IApplicationBuilder app)
+    {
+      app.Run(context =>
+      {
+        return Task.FromResult(context.Response.StatusCode = 401);
+      });
+    }
+
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
@@ -131,7 +142,13 @@ namespace Lotfsd.API
       app.Map("/graphql", branch => //https://github.com/graphql-dotnet/server/pull/158#issuecomment-431381490
       {
         branch.UseAuthentication();
-        branch.UseAuthorization();
+        branch.UseCors(x => x
+          .AllowAnyOrigin()
+          .AllowAnyMethod()
+          .AllowAnyHeader());
+
+        branch.MapWhen(context => context.User.FindFirst(ClaimTypes.Name) == null, HandleBranch);
+
         branch.UseGraphQL<ISchema>("");
       });
 

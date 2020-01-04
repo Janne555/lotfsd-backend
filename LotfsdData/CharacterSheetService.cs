@@ -23,7 +23,7 @@ namespace Lotfsd.Data
 
     public async Task<CharacterSheet> Get(string userId, string id)
     {
-      var cursor = await _characterSheets.FindAsync(cs => cs.Id.ToString() == id && cs.Owner.ToString() == userId);
+      var cursor = await _characterSheets.FindAsync(cs => cs.Id == id && cs.Owner == userId);
       return await cursor.FirstOrDefaultAsync();
     }
 

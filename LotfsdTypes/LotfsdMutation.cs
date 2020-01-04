@@ -3,7 +3,7 @@ using Lotfsd.Data;
 using Lotfsd.Data.Models;
 using System.Security.Claims;
 using Lotfsd.Types.Models;
-
+using GraphQL.Authorization;
 
 namespace Lotfsd.Types
 {

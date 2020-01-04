@@ -74,7 +74,7 @@ namespace Lotfsd.API.Controllers
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return Ok(tokenHandler.WriteToken(token));
       }
-      return Ok();
+      return StatusCode(401);
     }
   }
 }
