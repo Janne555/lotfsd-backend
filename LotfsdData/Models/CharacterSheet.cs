@@ -30,16 +30,8 @@ namespace Lotfsd.Data.Models
     public int SurpriseChance { get; set; }
   }
 
-  public class Attributes
+  public class Attributes : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public int Charisma { get; set; }
     public int Constitution { get; set; }
     public int Dexterity { get; set; }
@@ -48,16 +40,8 @@ namespace Lotfsd.Data.Models
     public int Wisdom { get; set; }
   }
 
-  public class AttributeModifiers
+  public class AttributeModifiers : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public int Charisma { get; set; }
     public int Constitution { get; set; }
     public int Dexterity { get; set; }
@@ -66,16 +50,8 @@ namespace Lotfsd.Data.Models
     public int Wisdom { get; set; }
   }
 
-  public class SavingThrows
+  public class SavingThrows : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public int Paralyze { get; set; }
     public int Poison { get; set; }
     public int BreathWeapon { get; set; }
@@ -83,16 +59,8 @@ namespace Lotfsd.Data.Models
     public int Magic { get; set; }
   }
 
-  public class CommonActivities
+  public class CommonActivities : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public int Architecture { get; set; }
     public int Bushcraft { get; set; }
     public int Climbing { get; set; }
@@ -105,47 +73,23 @@ namespace Lotfsd.Data.Models
     public int Tinkering { get; set; }
   }
 
-  public class Wallet
+  public class Wallet : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public int Copper { get; set; }
     public int Silver { get; set; }
     public int Gold { get; set; }
   }
 
-  public class Effect
+  public class Effect : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public string Type { get; set; }
     public string Target { get; set; }
     public string Method { get; set; }
     public int Value { get; set; }
   }
 
-  public class Retainer
+  public class Retainer : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public string Name { get; set; }
     public string Position { get; set; }
     public string Class { get; set; }
@@ -155,16 +99,8 @@ namespace Lotfsd.Data.Models
     public int Share { get; set; }
   }
 
-  public class CombatOptions
+  public class CombatOptions : CharacterSheet
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string CharacterId { get; set; }
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
-
     public bool Standard { get; set; }
     public bool Parry { get; set; }
     public bool ImprovedParry { get; set; }

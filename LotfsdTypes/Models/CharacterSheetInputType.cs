@@ -31,7 +31,7 @@ namespace Lotfsd.Types.Models
       Field(x => x.SurpriseChance);
     }
   }
-  public class AttributesInputType : InputObjectGraphType<Attributes>
+  public class AttributesInputType : CharacterSheetInputType<Attributes>
   {
     public AttributesInputType()
     {
@@ -45,7 +45,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class AttributeModifiersInputType : InputObjectGraphType<AttributeModifiers>
+  public class AttributeModifiersInputType : CharacterSheetInputType<AttributeModifiers>
   {
     public AttributeModifiersInputType()
     {
@@ -59,7 +59,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class SavingThrowsInputType : InputObjectGraphType<SavingThrows>
+  public class SavingThrowsInputType : CharacterSheetInputType<SavingThrows>
   {
     public SavingThrowsInputType()
     {
@@ -72,7 +72,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class CommonActivitiesInputType : InputObjectGraphType<CommonActivities>
+  public class CommonActivitiesInputType : CharacterSheetInputType<CommonActivities>
   {
     public CommonActivitiesInputType()
     {
@@ -90,7 +90,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class WalletInputType : InputObjectGraphType<Wallet>
+  public class WalletInputType : CharacterSheetInputType<Wallet>
   {
     public WalletInputType()
     {
@@ -101,7 +101,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class EffectInputType : InputObjectGraphType<Effect>
+  public class EffectInputType : CharacterSheetInputType<Effect>
   {
     public EffectInputType()
     {
@@ -113,7 +113,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class RetainerInputType : InputObjectGraphType<Retainer>
+  public class RetainerInputType : CharacterSheetInputType<Retainer>
   {
     public RetainerInputType()
     {
@@ -129,7 +129,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class CombatOptionsInputType : InputObjectGraphType<CombatOptions>
+  public class CombatOptionsInputType : CharacterSheetInputType<CombatOptions>
   {
     public CombatOptionsInputType()
     {

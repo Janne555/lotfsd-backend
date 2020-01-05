@@ -34,7 +34,7 @@ namespace Lotfsd.Types.Models
   }
 
 
-  public class AttributesType : ObjectGraphType<Attributes>
+  public class AttributesType : CharacterSheetType<Attributes>
   {
     public AttributesType()
     {
@@ -48,7 +48,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class AttributeModifiersType : ObjectGraphType<AttributeModifiers>
+  public class AttributeModifiersType : CharacterSheetType<AttributeModifiers>
   {
     public AttributeModifiersType()
     {
@@ -62,7 +62,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class SavingThrowsType : ObjectGraphType<SavingThrows>
+  public class SavingThrowsType : CharacterSheetType<SavingThrows>
   {
     public SavingThrowsType()
     {
@@ -75,7 +75,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class CommonActivitiesType : ObjectGraphType<CommonActivities>
+  public class CommonActivitiesType : CharacterSheetType<CommonActivities>
   {
     public CommonActivitiesType()
     {
@@ -93,7 +93,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class WalletType : ObjectGraphType<Wallet>
+  public class WalletType : CharacterSheetType<Wallet>
   {
     public WalletType()
     {
@@ -104,7 +104,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class EffectType : ObjectGraphType<Effect>
+  public class EffectType : CharacterSheetType<Effect>
   {
     public EffectType()
     {
@@ -116,7 +116,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class RetainerType : ObjectGraphType<Retainer>
+  public class RetainerType : CharacterSheetType<Retainer>
   {
     public RetainerType()
     {
@@ -132,7 +132,7 @@ namespace Lotfsd.Types.Models
     }
   }
 
-  public class CombatOptionsType : ObjectGraphType<CombatOptions>
+  public class CombatOptionsType : CharacterSheetType<CombatOptions>
   {
     public CombatOptionsType()
     {

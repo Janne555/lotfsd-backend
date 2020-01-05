@@ -2,8 +2,6 @@ using GraphQL.Types;
 using Lotfsd.Data;
 using Lotfsd.Data.Models;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using GraphQL.Authorization;
 
 namespace Lotfsd.Types.Models
 {

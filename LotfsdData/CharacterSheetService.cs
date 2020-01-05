@@ -27,9 +27,10 @@ namespace Lotfsd.Data
       return await cursor.FirstOrDefaultAsync();
     }
 
-    public Task Create(T doc)
+    async public Task<T> Create(T doc)
     {
-      return _collection.InsertOneAsync(doc);
+      await _collection.InsertOneAsync(doc);
+      return doc;
     }
 
     public Task<T> Replace(string userId, T doc, string id)
