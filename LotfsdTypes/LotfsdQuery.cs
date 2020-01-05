@@ -34,7 +34,8 @@ namespace Lotfsd.Types.Models
 
       Field<InfoType>(
         "foo",
-        resolve: context => new Info {
+        resolve: context => new Info
+        {
           Id = "foo",
           Name = "bar",
           Owner = "baz",

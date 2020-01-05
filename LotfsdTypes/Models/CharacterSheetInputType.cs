@@ -16,7 +16,7 @@ namespace Lotfsd.Types.Models
   {
     public InfoInputType()
     {
-      Name = "Info";
+      Name = "InfoInput";
       Field(x => x.Name);
       Field(x => x.Experience);
       Field(x => x.Class);

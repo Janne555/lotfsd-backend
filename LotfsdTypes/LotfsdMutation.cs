@@ -27,7 +27,7 @@ namespace Lotfsd.Types
         });
 
       Field<InfoType>(
-        "replaceCharacterSheet",
+        "replaceInfo",
         arguments: new QueryArguments(
           new QueryArgument<NonNullGraphType<InfoInputType>> { Name = "info" }
           ),

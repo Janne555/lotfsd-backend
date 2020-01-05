@@ -115,6 +115,9 @@ namespace Lotfsd.API
         .AddSingleton<PropertyType>()
         .AddSingleton<ItemInstanceType>()
         .AddSingleton<CombatOptionsType>()
+        .AddSingleton<InfoType>();
+
+      services
         .AddSingleton<AttributesInputType>()
         .AddSingleton<AttributeModifiersInputType>()
         .AddSingleton<SavingThrowsInputType>()
@@ -123,7 +126,8 @@ namespace Lotfsd.API
         .AddSingleton<EffectInputType>()
         .AddSingleton<PropertyInputType>()
         .AddSingleton<ItemInstanceInputType>()
-        .AddSingleton<CombatOptionsInputType>();
+        .AddSingleton<CombatOptionsInputType>()
+        .AddSingleton<InfoInputType>();
     }
 
     private static void HandleBranch(IApplicationBuilder app)
