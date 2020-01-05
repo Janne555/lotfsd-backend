@@ -18,15 +18,19 @@ namespace Lotfsd.API.Controllers
   [Route("api/[controller]")]
   public class UserController : ControllerBase
   {
-    private readonly UserService _userService;
     private readonly UserManager<User> _userManager;
     private readonly string _secret;
+    private readonly CharacterSheetService<Info> _infoService;
 
-    public UserController(UserService userService, UserManager<User> userManager, IDatabaseSettings dbsettings)
+    public UserController(
+      UserManager<User> userManager,
+      IDatabaseSettings dbsettings,
+      CharacterSheetService<Info> infoService
+      )
     {
-      _userService = userService;
       _userManager = userManager;
       _secret = dbsettings.Secret;
+      _infoService = infoService;
     }
 
 
@@ -45,7 +49,7 @@ namespace Lotfsd.API.Controllers
             UserName = model.Username
           };
 
-          var result = await _userManager.CreateAsync(user, model.Password);
+          await _userManager.CreateAsync(user, model.Password);
         }
         return Ok();
       }
@@ -66,13 +70,16 @@ namespace Lotfsd.API.Controllers
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id)
             }),
           Expires = DateTime.UtcNow.AddDays(7),
           SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return Ok(tokenHandler.WriteToken(token));
+        return Ok(new UserDetails
+        {
+          Token = tokenHandler.WriteToken(token)
+        });
       }
       return StatusCode(401);
     }

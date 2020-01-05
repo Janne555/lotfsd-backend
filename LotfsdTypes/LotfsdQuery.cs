@@ -79,7 +79,7 @@ namespace Lotfsd.Types.Models
         "allSavingThrows",
         resolve: context => ManyResolver(context, savingThrowsService));
 
-      Field<ListGraphType<CommonActivitiesType>>(
+      Field<CommonActivitiesType>(
         "commonActivities",
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
         resolve: context => SingleResolver(context, commonActivitiesService));
@@ -102,7 +102,7 @@ namespace Lotfsd.Types.Models
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
         resolve: context => SingleResolver(context, effectService));
 
-      Field<ListGraphType<InfoType>>(
+      Field<ListGraphType<EffectType>>(
         "effects",
         resolve: context => ManyResolver(context, effectService));
 
@@ -111,7 +111,7 @@ namespace Lotfsd.Types.Models
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
         resolve: context => SingleResolver(context, retainerService));
 
-      Field<ListGraphType<InfoType>>(
+      Field<ListGraphType<RetainerType>>(
         "retainers",
         resolve: context => ManyResolver(context, retainerService));
 
@@ -120,7 +120,7 @@ namespace Lotfsd.Types.Models
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
         resolve: context => SingleResolver(context, combatOptionsService));
 
-      Field<ListGraphType<InfoType>>(
+      Field<ListGraphType<CombatOptionsType>>(
         "allCombatOptions",
         resolve: context => ManyResolver(context, combatOptionsService));
     }

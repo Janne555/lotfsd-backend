@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Property.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ItemInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ICharacterSheet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

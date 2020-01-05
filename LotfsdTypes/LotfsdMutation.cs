@@ -143,7 +143,7 @@ namespace Lotfsd.Types
           ),
         resolve: context => AddResolver(context, effectService, "effect"));
 
-      Field<InfoType>(
+      Field<EffectType>(
         "replaceEffect",
         arguments: new QueryArguments(
           new QueryArgument<NonNullGraphType<EffectInputType>> { Name = "effect" }
@@ -157,7 +157,7 @@ namespace Lotfsd.Types
           ),
         resolve: context => AddResolver(context, retainerService, "retainer"));
 
-      Field<InfoType>(
+      Field<RetainerType>(
         "replaceRetainer",
         arguments: new QueryArguments(
           new QueryArgument<NonNullGraphType<RetainerInputType>> { Name = "retainer" }
@@ -171,7 +171,7 @@ namespace Lotfsd.Types
           ),
         resolve: context => AddResolver(context, combatOptionsService, "combatOptions"));
 
-      Field<InfoType>(
+      Field<CombatOptionsType>(
         "replaceCombatOptions",
         arguments: new QueryArguments(
           new QueryArgument<NonNullGraphType<CombatOptionsInputType>> { Name = "combatOptions" }
