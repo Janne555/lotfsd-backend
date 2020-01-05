@@ -1,40 +1,36 @@
 ﻿using GraphQL.Types;
 using Lotfsd.Data.Models;
-using Lotfsd.Types.Models;
 
 namespace Lotfsd.Types.Models
 {
-  public class CharacterSheetInputType : InputObjectGraphType<CharacterSheet>
+  public class CharacterSheetInputType<T> : InputObjectGraphType<T> where T : ICharacterSheet
   {
     public CharacterSheetInputType()
     {
-      Name = "CharacterSheetInput";
-      Field<IdGraphType>("Id");
-      Field(x => x.Name);
+      Field(x => x.Id);
+      Field(x => x.CharacterId);
+    }
+  }
 
+  public class InfoInputType : CharacterSheetInputType<Info>
+  {
+    public InfoInputType()
+    {
+      Name = "Info";
+      Field(x => x.Name);
       Field(x => x.Experience);
       Field(x => x.Class);
       Field(x => x.Race);
       Field(x => x.Age);
       Field(x => x.Gender);
       Field(x => x.Alignment);
+      Field(x => x.Player);
       Field(x => x.AttackBonus);
       Field(x => x.CurrentHp);
       Field(x => x.MaxHp);
       Field(x => x.SurpriseChance);
-
-      Field<AttributesInputType>("Attributes");
-      Field<AttributeModifiersInputType>("AttributeModifiers");
-      Field<SavingThrowsInputType>("SavingThrows");
-      Field<CommonActivitiesInputType>("CommonActivities");
-      Field<WalletInputType>("Wallet");
-
-      Field<ListGraphType<EffectInputType>>("Effect");
-      Field<ListGraphType<PropertyInputType>>("Properties");
-      Field<ListGraphType<ItemInstanceInputType>>("Inventory");
     }
   }
-
   public class AttributesInputType : InputObjectGraphType<Attributes>
   {
     public AttributesInputType()
@@ -129,7 +125,20 @@ namespace Lotfsd.Types.Models
       Field(x => x.Hitpoints);
       Field(x => x.Wage);
       Field(x => x.Share);
-      Field(x => x.id);
+      Field(x => x.Id);
+    }
+  }
+
+  public class CombatOptionsInputType : InputObjectGraphType<CombatOptions>
+  {
+    public CombatOptionsInputType()
+    {
+      Name = "CombatOptions";
+      Field(x => x.Standard);
+      Field(x => x.Parry);
+      Field(x => x.ImprovedParry);
+      Field(x => x.Press);
+      Field(x => x.Defensive);
     }
   }
 }

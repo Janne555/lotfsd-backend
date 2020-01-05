@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\DatabaseSettings.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Property.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ItemInstance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ICharacterSheet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

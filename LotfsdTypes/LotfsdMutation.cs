@@ -3,42 +3,42 @@ using Lotfsd.Data;
 using Lotfsd.Data.Models;
 using System.Security.Claims;
 using Lotfsd.Types.Models;
-using GraphQL.Authorization;
 
 namespace Lotfsd.Types
 {
   public class LotfsdMutation : ObjectGraphType
   {
-    public LotfsdMutation(CharacterSheetService characterSheetService)
+    public LotfsdMutation(CharacterSheetService<Info> infoService)
     {
       Name = "Mutation";
 
-      Field<CharacterSheetType>(
-        "createCharacterSheet",
+      Field<InfoType>(
+        "addInfo",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<CharacterSheetInputType>> { Name = "characterSheet" }
+          new QueryArgument<NonNullGraphType<InfoInputType>> { Name = "info" }
           ),
         resolve: context =>
         {
           var userContext = context.UserContext as GraphQLUserContext;
-          var characterSheet = context.GetArgument<CharacterSheet>("characterSheet");
-          characterSheet.Owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
-          return characterSheetService.Create(characterSheet);
+          var info = context.GetArgument<Info>("info");
+          var owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
+          info.Owner = owner;
+          return infoService.Create(info);
         });
 
-      Field<CharacterSheetType>(
+      Field<InfoType>(
         "replaceCharacterSheet",
         arguments: new QueryArguments(
-          new QueryArgument<NonNullGraphType<CharacterSheetInputType>> { Name = "characterSheet" },
-          new QueryArgument<NonNullGraphType<IdGraphType>> { Name = "id" }
+          new QueryArgument<NonNullGraphType<InfoInputType>> { Name = "info" }
           ),
         resolve: context =>
         {
           var userContext = context.UserContext as GraphQLUserContext;
-          var characterSheet = context.GetArgument<CharacterSheet>("characterSheet");
-          var id = context.GetArgument<string>("id");
-          var userId = userContext.User.FindFirst(ClaimTypes.Name).Value;
-          return characterSheetService.Replace(userId, characterSheet, id.ToString());
+          var info = context.GetArgument<Info>("info");
+          var id = info.Id;
+          var owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
+          info.Owner = owner;
+          return infoService.Replace(owner, info, id);
         });
     }
   }

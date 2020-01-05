@@ -7,6 +7,7 @@
     public string CharacterSheetCollectionName { get; set; }
     public string UserCollectionName { get; set; }
     public string Secret { get; set; }
+    public string InfoCollectionName { get; set; }
   }
 
   public interface IDatabaseSettings
@@ -20,5 +21,7 @@
     string UserCollectionName { get; set; }
 
     string Secret { get; set; }
+
+    public string InfoCollectionName { get; set; }
   }
 }

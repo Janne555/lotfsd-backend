@@ -9,30 +9,39 @@ namespace Lotfsd.Types.Models
 {
   public class LotfsdQuery : ObjectGraphType
   {
-    public LotfsdQuery(CharacterSheetService characterSheetService)
+    public LotfsdQuery(CharacterSheetService<Info> infoService)
     {
       Name = "Query";
 
-      Field<CharacterSheetType>(
-        "characterSheet",
+      Field<InfoType>(
+        "info",
         arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "id" }),
         resolve: context =>
           {
             var userContext = context.UserContext as GraphQLUserContext;
-            return characterSheetService.Get(userContext.User.FindFirst(ClaimTypes.Name).Value, context.GetArgument<string>("id"));
+            var owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
+            return infoService.Get(owner, context.GetArgument<string>("id"));
           });
 
-      Field<ListGraphType<CharacterSheetType>>(
-        "characterSheets",
+      Field<ListGraphType<InfoType>>(
+        "infos",
         resolve: context =>
         {
           var userContext = context.UserContext as GraphQLUserContext;
-          return characterSheetService.Get(userContext.User.FindFirst(ClaimTypes.Name).Value);
+          var owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
+          return infoService.Get(owner);
         });
 
-      Field<CharacterSheetType>(
+      Field<InfoType>(
         "foo",
-        resolve: context => new CharacterSheet { Id = "foo", Name = "bar", Owner = "baz" });
+        resolve: context => new Info {
+          Id = "foo",
+          Name = "bar",
+          Owner = "baz",
+          Age = 0,
+          Alignment = "chaotic",
+          AttackBonus = 3
+        });
     }
   }
 }

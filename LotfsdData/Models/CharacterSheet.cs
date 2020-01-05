@@ -1,17 +1,21 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System.Collections.Generic;
 
 namespace Lotfsd.Data.Models
 {
-  public class CharacterSheet
+  public class CharacterSheet : ICharacterSheet
   {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
     [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
     public string Owner { get; set; }
+  }
 
+  public class Info : CharacterSheet
+  {
     public string Name { get; set; }
     public int Experience { get; set; }
     public string Class { get; set; }
@@ -24,21 +28,18 @@ namespace Lotfsd.Data.Models
     public int CurrentHp { get; set; }
     public int MaxHp { get; set; }
     public int SurpriseChance { get; set; }
-
-    public Attributes Attributes { get; set; }
-    public AttributeModifiers AttributeModifiers { get; set; }
-    public SavingThrows SavingThrows { get; set; }
-    public CommonActivities CommonActivities { get; set; }
-    public Wallet Wallet { get; set; }
-
-    public List<Effect> Effects { get; set; }
-    public List<ItemInstance> Inventory { get; set; }
-    public List<Property> Properties { get; set; }
-    public List<Retainer> Retainers { get; set; }
   }
 
   public class Attributes
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public int Charisma { get; set; }
     public int Constitution { get; set; }
     public int Dexterity { get; set; }
@@ -49,6 +50,14 @@ namespace Lotfsd.Data.Models
 
   public class AttributeModifiers
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public int Charisma { get; set; }
     public int Constitution { get; set; }
     public int Dexterity { get; set; }
@@ -59,6 +68,14 @@ namespace Lotfsd.Data.Models
 
   public class SavingThrows
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public int Paralyze { get; set; }
     public int Poison { get; set; }
     public int BreathWeapon { get; set; }
@@ -68,6 +85,14 @@ namespace Lotfsd.Data.Models
 
   public class CommonActivities
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public int Architecture { get; set; }
     public int Bushcraft { get; set; }
     public int Climbing { get; set; }
@@ -82,6 +107,14 @@ namespace Lotfsd.Data.Models
 
   public class Wallet
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public int Copper { get; set; }
     public int Silver { get; set; }
     public int Gold { get; set; }
@@ -89,6 +122,14 @@ namespace Lotfsd.Data.Models
 
   public class Effect
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public string Type { get; set; }
     public string Target { get; set; }
     public string Method { get; set; }
@@ -97,6 +138,14 @@ namespace Lotfsd.Data.Models
 
   public class Retainer
   {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
     public string Name { get; set; }
     public string Position { get; set; }
     public string Class { get; set; }
@@ -104,6 +153,22 @@ namespace Lotfsd.Data.Models
     public int Hitpoints { get; set; }
     public int Wage { get; set; }
     public int Share { get; set; }
-    public string id { get; set; }
+  }
+
+  public class CombatOptions
+  {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string CharacterId { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Owner { get; set; }
+
+    public bool Standard { get; set; }
+    public bool Parry { get; set; }
+    public bool ImprovedParry { get; set; }
+    public bool Press { get; set; }
+    public bool Defensive { get; set; }
   }
 }

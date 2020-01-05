@@ -3,14 +3,22 @@ using Lotfsd.Data.Models;
 
 namespace Lotfsd.Types.Models
 {
-  public class CharacterSheetType : ObjectGraphType<CharacterSheet>
+
+  public class CharacterSheetType<T> : ObjectGraphType<T> where T : ICharacterSheet
   {
     public CharacterSheetType()
     {
-      Name = "CharacterSheet";
-      Field<IdGraphType>("Id");
-      Field(x => x.Name);
+      Field(x => x.Id);
+      Field(x => x.CharacterId);
+    }
+  }
 
+  public class InfoType : CharacterSheetType<Info>
+  {
+    public InfoType()
+    {
+      Name = "Info";
+      Field(x => x.Name);
       Field(x => x.Experience);
       Field(x => x.Class);
       Field(x => x.Race);
@@ -22,18 +30,9 @@ namespace Lotfsd.Types.Models
       Field(x => x.CurrentHp);
       Field(x => x.MaxHp);
       Field(x => x.SurpriseChance);
-
-      Field<AttributesType>("Attributes");
-      Field<AttributeModifiersType>("AttributeModifiers");
-      Field<SavingThrowsType>("SavingThrows");
-      Field<CommonActivitiesType>("CommonActivities");
-      Field<WalletType>("Wallet");
-
-      Field<ListGraphType<EffectType>>("Effect");
-      Field<ListGraphType<PropertyType>>("Properties");
-      Field<ListGraphType<ItemInstanceType>>("Inventory");
     }
   }
+
 
   public class AttributesType : ObjectGraphType<Attributes>
   {
@@ -130,6 +129,19 @@ namespace Lotfsd.Types.Models
       Field(x => x.Wage);
       Field(x => x.Share);
       Field(x => x.id);
+    }
+  }
+
+  public class CombatOptionsType : ObjectGraphType<CombatOptions>
+  {
+    public CombatOptionsType()
+    {
+      Name = "CombatOptions";
+      Field(x => x.Standard);
+      Field(x => x.Parry);
+      Field(x => x.improvedParry);
+      Field(x => x.press);
+      Field(x => x.defensive);
     }
   }
 }

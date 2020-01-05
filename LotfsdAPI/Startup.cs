@@ -16,7 +16,6 @@ using GraphQL.Types;
 using GraphQL.Server;
 using Lotfsd.Types;
 using Lotfsd.Types.Models;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -57,7 +56,12 @@ namespace Lotfsd.API
 
       services.AddSingleton<MongoService>();
       services.AddSingleton<UserService>();
-      services.AddSingleton<CharacterSheetService>();
+      services.AddSingleton(sp =>
+        new CharacterSheetService<Info>(
+          sp.GetRequiredService<MongoService>(),
+          sp.GetRequiredService<IDatabaseSettings>().InfoCollectionName
+        )
+      );
 
       services.AddControllers()
         .AddNewtonsoftJson(Options => Options.UseMemberCasing());
@@ -85,8 +89,6 @@ namespace Lotfsd.API
 
       services.AddSingleton<LotfsdQuery>();
       services.AddSingleton<LotfsdMutation>();
-      services.AddSingleton<CharacterSheetType>();
-      services.AddSingleton<CharacterSheetInputType>();
       services.AddSingleton<ISchema, LotfsdSchema>();
 
       services.AddGraphQL(_ =>
@@ -103,8 +105,7 @@ namespace Lotfsd.API
 
     public void ConfigureGraphQLTypes(IServiceCollection services)
     {
-      services.AddSingleton<CharacterSheetType>()
-        .AddSingleton<CharacterSheetInputType>()
+      services
         .AddSingleton<AttributesType>()
         .AddSingleton<AttributeModifiersType>()
         .AddSingleton<SavingThrowsType>()
@@ -113,6 +114,7 @@ namespace Lotfsd.API
         .AddSingleton<EffectType>()
         .AddSingleton<PropertyType>()
         .AddSingleton<ItemInstanceType>()
+        .AddSingleton<CombatOptionsType>()
         .AddSingleton<AttributesInputType>()
         .AddSingleton<AttributeModifiersInputType>()
         .AddSingleton<SavingThrowsInputType>()
@@ -120,7 +122,8 @@ namespace Lotfsd.API
         .AddSingleton<WalletInputType>()
         .AddSingleton<EffectInputType>()
         .AddSingleton<PropertyInputType>()
-        .AddSingleton<ItemInstanceInputType>();
+        .AddSingleton<ItemInstanceInputType>()
+        .AddSingleton<CombatOptionsInputType>();
     }
 
     private static void HandleBranch(IApplicationBuilder app)
