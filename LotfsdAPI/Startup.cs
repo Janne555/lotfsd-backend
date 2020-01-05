@@ -110,6 +110,10 @@ namespace Lotfsd.API
           new CharacterSheetService<Attributes>(
             sp.GetRequiredService<MongoService>(),
             sp.GetRequiredService<IDatabaseSettings>().AttributesCollectionName
+        )).AddSingleton(sp =>
+          new CharacterSheetService<AttributeModifiers>(
+            sp.GetRequiredService<MongoService>(),
+            sp.GetRequiredService<IDatabaseSettings>().AttributeModifiersCollectionName
         ))
         .AddSingleton(sp =>
           new CharacterSheetService<SavingThrows>(
@@ -155,7 +159,9 @@ namespace Lotfsd.API
         .AddSingleton<PropertyType>()
         .AddSingleton<ItemInstanceType>()
         .AddSingleton<CombatOptionsType>()
-        .AddSingleton<InfoType>();
+        .AddSingleton<InfoType>()
+        .AddSingleton<RetainerType>()
+        .AddSingleton<EffectType>();
 
       services
         .AddSingleton<AttributesInputType>()
@@ -167,7 +173,9 @@ namespace Lotfsd.API
         .AddSingleton<PropertyInputType>()
         .AddSingleton<ItemInstanceInputType>()
         .AddSingleton<CombatOptionsInputType>()
-        .AddSingleton<InfoInputType>();
+        .AddSingleton<InfoInputType>()
+        .AddSingleton<RetainerInputType>()
+        .AddSingleton<EffectInputType>();
     }
 
     private void HandleBranch(IApplicationBuilder app)

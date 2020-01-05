@@ -128,7 +128,6 @@ namespace Lotfsd.Types.Models
       Field(x => x.Hitpoints);
       Field(x => x.Wage);
       Field(x => x.Share);
-      Field(x => x.Id);
     }
   }
 

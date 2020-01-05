@@ -125,7 +125,6 @@ namespace Lotfsd.Types.Models
       Field(x => x.Hitpoints);
       Field(x => x.Wage);
       Field(x => x.Share);
-      Field(x => x.Id);
     }
   }
 
@@ -133,7 +132,7 @@ namespace Lotfsd.Types.Models
   {
     public CombatOptionsInputType()
     {
-      Name = "CombatOptions";
+      Name = "CombatOptionsInput";
       Field(x => x.Standard);
       Field(x => x.Parry);
       Field(x => x.ImprovedParry);
