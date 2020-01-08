@@ -16,7 +16,7 @@ namespace Lotfsd.Types.Models
     {
       var userContext = context.UserContext as GraphQLUserContext;
       var owner = userContext.User.FindFirst(ClaimTypes.Name).Value;
-      return service.Get(owner, context.GetArgument<string>("id"));
+      return service.Get(context.GetArgument<string>("id"), owner);
     }
 
     private Task<List<T>> ManyResolver<T>(

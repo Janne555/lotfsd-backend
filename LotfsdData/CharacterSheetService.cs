@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using Lotfsd.Data.Models;
+using System;
 
 namespace Lotfsd.Data
 {
@@ -23,7 +24,8 @@ namespace Lotfsd.Data
 
     public async Task<T> Get(string id, string owner)
     {
-      var cursor = await _collection.FindAsync(cs => cs.Id == id && cs.Owner == owner);
+      Console.WriteLine(id, owner);
+      var cursor = await _collection.FindAsync(cs => cs.CharacterId.Equals(id) && cs.Owner.Equals(owner));
       return await cursor.FirstOrDefaultAsync();
     }
 
