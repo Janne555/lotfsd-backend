@@ -36,8 +36,6 @@ namespace Lotfsd.Types
       return service.Replace(owner, doc, id);
     }
 
-
-
     public LotfsdMutation(
       CharacterSheetService<Info> infoService,
       CharacterSheetService<Attributes> attributesService,

@@ -7,7 +7,6 @@ namespace Lotfsd.Types.Models
   {
     public CharacterSheetInputType()
     {
-      Field(x => x.Id);
       Field(x => x.CharacterId);
     }
   }

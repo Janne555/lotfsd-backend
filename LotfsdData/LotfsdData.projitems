@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\ItemInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ICharacterSheet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserDetails.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CharacterService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

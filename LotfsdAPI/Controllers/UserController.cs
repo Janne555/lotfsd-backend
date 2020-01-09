@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Lotfsd.Data.Models;
+using System.Linq;
+
 
 namespace Lotfsd.API.Controllers
 {
@@ -76,9 +78,15 @@ namespace Lotfsd.API.Controllers
           SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        var infos = await _infoService.Get(user.Id);
+
+        var asDict = infos.ToDictionary(x => x.CharacterId, x => x.Name);
+
         return Ok(new UserDetails
         {
-          Token = tokenHandler.WriteToken(token)
+          Token = tokenHandler.WriteToken(token),
+          Characters = asDict
         });
       }
       return StatusCode(401);
