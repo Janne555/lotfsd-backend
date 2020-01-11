@@ -18,6 +18,7 @@ using Lotfsd.Types;
 using Lotfsd.Types.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lotfsd.API
 {
@@ -52,10 +53,11 @@ namespace Lotfsd.API
         return conf;
       });
 
-      services.AddHttpContextAccessor();
+      services.AddDbContext<LotfsdContext>(
+          options => options.UseNpgsql(Configuration.GetConnectionString("LotfsdConnection"))
+      );
 
-      services.AddSingleton<MongoService>();
-      services.AddSingleton<UserService>();
+      services.AddHttpContextAccessor();
 
       services.AddControllers()
         .AddNewtonsoftJson(Options => Options.UseMemberCasing());
