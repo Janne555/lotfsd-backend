@@ -22,17 +22,14 @@ namespace Lotfsd.API.Controllers
   {
     private readonly UserManager<User> _userManager;
     private readonly string _secret;
-    private readonly CharacterSheetService<Info> _infoService;
 
     public UserController(
       UserManager<User> userManager,
-      IDatabaseSettings dbsettings,
-      CharacterSheetService<Info> infoService
+      DatabaseSettings dbsettings
       )
     {
       _userManager = userManager;
       _secret = dbsettings.Secret;
-      _infoService = infoService;
     }
 
 
@@ -72,22 +69,14 @@ namespace Lotfsd.API.Controllers
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.Id)
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
             }),
           Expires = DateTime.UtcNow.AddDays(7),
           SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        var infos = await _infoService.Get(user.Id);
-
-        var asDict = infos.ToDictionary(x => x.CharacterId, x => x.Name);
-
-        return Ok(new UserDetails
-        {
-          Token = tokenHandler.WriteToken(token),
-          Characters = asDict
-        });
+        return Ok(tokenHandler.WriteToken(token));
       }
       return StatusCode(401);
     }

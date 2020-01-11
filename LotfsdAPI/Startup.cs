@@ -44,7 +44,7 @@ namespace Lotfsd.API
       services.Configure<DatabaseSettings>(
           Configuration.GetSection(nameof(DatabaseSettings)));
 
-      services.AddSingleton<IDatabaseSettings>(sp =>
+      services.AddSingleton<DatabaseSettings>(sp =>
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
         conf.ConnectionString = Configuration["dbconnection"];
@@ -93,90 +93,8 @@ namespace Lotfsd.API
         .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
 
       services.AddControllers();
-
-      ConfigureGraphQLTypes(services);
-      ConfigureCollections(services);
     }
 
-    private void ConfigureCollections(IServiceCollection services)
-    {
-      services
-        .AddSingleton(sp =>
-          new CharacterSheetService<Info>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().InfoCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<Attributes>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().AttributesCollectionName
-        )).AddSingleton(sp =>
-          new CharacterSheetService<AttributeModifiers>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().AttributeModifiersCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<SavingThrows>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().SavingThrowsCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<CommonActivities>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().CommonActivitiesCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<Wallet>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().WalletCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<Effect>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().EffectsCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<Retainer>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().RetainersCollectionName
-        ))
-        .AddSingleton(sp =>
-          new CharacterSheetService<CombatOptions>(
-            sp.GetRequiredService<MongoService>(),
-            sp.GetRequiredService<IDatabaseSettings>().CombatOptionsCollectionName
-        ));
-    }
-
-    private void ConfigureGraphQLTypes(IServiceCollection services)
-    {
-      services
-        .AddSingleton<AttributesType>()
-        .AddSingleton<AttributeModifiersType>()
-        .AddSingleton<SavingThrowsType>()
-        .AddSingleton<CommonActivitiesType>()
-        .AddSingleton<WalletType>()
-        .AddSingleton<EffectType>()
-        .AddSingleton<PropertyType>()
-        .AddSingleton<ItemInstanceType>()
-        .AddSingleton<CombatOptionsType>()
-        .AddSingleton<InfoType>()
-        .AddSingleton<RetainerType>()
-        .AddSingleton<EffectType>();
-
-      services
-        .AddSingleton<AttributesInputType>()
-        .AddSingleton<AttributeModifiersInputType>()
-        .AddSingleton<SavingThrowsInputType>()
-        .AddSingleton<CommonActivitiesInputType>()
-        .AddSingleton<WalletInputType>()
-        .AddSingleton<EffectInputType>()
-        .AddSingleton<PropertyInputType>()
-        .AddSingleton<ItemInstanceInputType>()
-        .AddSingleton<CombatOptionsInputType>()
-        .AddSingleton<InfoInputType>()
-        .AddSingleton<RetainerInputType>()
-        .AddSingleton<EffectInputType>();
-    }
 
     private void HandleBranch(IApplicationBuilder app)
     {

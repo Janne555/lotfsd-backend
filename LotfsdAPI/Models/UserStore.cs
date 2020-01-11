@@ -32,7 +32,7 @@ namespace Lotfsd.API.Models
 
     public Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
-      return _userService.FindUserAsync(userId);
+      return _userService.FindUserAsync(4);
     }
 
     public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace Lotfsd.API.Models
 
     public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
     {
-      return Task.FromResult(user.Id);
+      return Task.FromResult("not working");
     }
 
     public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
