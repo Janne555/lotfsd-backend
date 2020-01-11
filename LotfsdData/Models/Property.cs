@@ -1,15 +1,8 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-namespace Lotfsd.Data.Models
+﻿namespace Lotfsd.Data.Models
 {
   public class Property
   {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Owner { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public int Value { get; set; }
     public int Rent { get; set; }

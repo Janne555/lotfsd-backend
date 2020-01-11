@@ -52,25 +52,4 @@ namespace Lotfsd.Data.Models
     public List<ItemInstance> Inventory { get; set; }
     public List<Property> Properties { get; set; }
   }
-
-  public class Effect
-  {
-    public int Id { get; set; }
-    public string Type { get; set; }
-    public string Target { get; set; }
-    public string Method { get; set; }
-    public int Value { get; set; }
-  }
-
-  public class Retainer
-  {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Position { get; set; }
-    public string Class { get; set; }
-    public int Level { get; set; }
-    public int Hitpoints { get; set; }
-    public int Wage { get; set; }
-    public int Share { get; set; }
-  }
 }
