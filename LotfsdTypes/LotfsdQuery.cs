@@ -21,7 +21,7 @@ namespace Lotfsd.Types
         resolve: context =>
         {
           var id = context.GetArgument<string>("id");
-          return lotfsdContext.CharacterSheets.Where(x => x.Guid.Equals(id)).FirstOrDefaultAsync();
+          return lotfsdContext.CharacterSheets.Where(x => x.Guid.Equals(id)).FirstOrDefault();
         });
     }
   }

@@ -57,23 +57,23 @@ namespace Lotfsd.Types.Models
       //  TODO solve n+1
       Field<ListGraphType<EffectType>, List<Effect>>()
          .Name("Effects")
-         .ResolveAsync(ctx =>
+         .Resolve(ctx =>
          {
-           return lotfsdContext.Effects.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToListAsync();
+           return lotfsdContext.Effects.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToList();
          });
 
       Field<ListGraphType<RetainerType>, List<Retainer>>()
          .Name("Retainers")
-         .ResolveAsync(ctx =>
+         .Resolve(ctx =>
          {
-           return lotfsdContext.Retainers.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToListAsync();
+           return lotfsdContext.Retainers.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToList();
          });
 
       Field<ListGraphType<PropertyType>, List<Property>>()
          .Name("Retainers")
-         .ResolveAsync(ctx =>
+         .Resolve(ctx =>
          {
-           return lotfsdContext.Properties.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToListAsync();
+           return lotfsdContext.Properties.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToList();
          });
 
     }
