@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Lotfsd.Data.Models;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Lotfsd.API.Models
 {

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lotfsd.API.Migrations
 {
     [DbContext(typeof(LotfsdContext))]
-    [Migration("20200112083933_initial")]
+    [Migration("20200112103034_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,9 +114,6 @@ namespace Lotfsd.API.Migrations
 
                     b.Property<bool>("Parry")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("Player")
-                        .HasColumnType("text");
 
                     b.Property<int>("Poison")
                         .HasColumnType("integer");
@@ -248,7 +245,7 @@ namespace Lotfsd.API.Migrations
                         .HasColumnType("text")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
-                    b.Property<int?>("ItemId")
+                    b.Property<int>("ItemId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -270,7 +267,7 @@ namespace Lotfsd.API.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CharacterSheetId")
+                    b.Property<int>("CharacterSheetId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
@@ -315,7 +312,7 @@ namespace Lotfsd.API.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CharacterSheetId")
+                    b.Property<int>("CharacterSheetId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Class")
@@ -401,14 +398,18 @@ namespace Lotfsd.API.Migrations
 
                     b.HasOne("Lotfsd.Data.Models.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemId");
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.Property", b =>
                 {
-                    b.HasOne("Lotfsd.Data.Models.CharacterSheet", null)
+                    b.HasOne("Lotfsd.Data.Models.CharacterSheet", "CharacterSheet")
                         .WithMany("Properties")
-                        .HasForeignKey("CharacterSheetId");
+                        .HasForeignKey("CharacterSheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Lotfsd.Data.Models.ItemInstance", "Inventory")
                         .WithMany()
@@ -417,9 +418,11 @@ namespace Lotfsd.API.Migrations
 
             modelBuilder.Entity("Lotfsd.Data.Models.Retainer", b =>
                 {
-                    b.HasOne("Lotfsd.Data.Models.CharacterSheet", null)
+                    b.HasOne("Lotfsd.Data.Models.CharacterSheet", "CharacterSheet")
                         .WithMany("Retainers")
-                        .HasForeignKey("CharacterSheetId");
+                        .HasForeignKey("CharacterSheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

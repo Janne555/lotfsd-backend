@@ -53,7 +53,6 @@ namespace Lotfsd.API.Migrations
                     Age = table.Column<int>(nullable: false),
                     Gender = table.Column<string>(nullable: true),
                     Alignment = table.Column<string>(nullable: true),
-                    Player = table.Column<string>(nullable: true),
                     AttackBonus = table.Column<int>(nullable: false),
                     CurrentHp = table.Column<int>(nullable: false),
                     MaxHp = table.Column<int>(nullable: false),
@@ -131,7 +130,7 @@ namespace Lotfsd.API.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
-                    ItemId = table.Column<int>(nullable: true),
+                    ItemId = table.Column<int>(nullable: false),
                     Equipped = table.Column<bool>(nullable: false),
                     CharacterSheetId = table.Column<int>(nullable: true)
                 },
@@ -149,7 +148,7 @@ namespace Lotfsd.API.Migrations
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,7 +165,7 @@ namespace Lotfsd.API.Migrations
                     Hitpoints = table.Column<int>(nullable: false),
                     Wage = table.Column<int>(nullable: false),
                     Share = table.Column<int>(nullable: false),
-                    CharacterSheetId = table.Column<int>(nullable: true)
+                    CharacterSheetId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,7 +175,7 @@ namespace Lotfsd.API.Migrations
                         column: x => x.CharacterSheetId,
                         principalTable: "CharacterSheets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,7 +191,7 @@ namespace Lotfsd.API.Migrations
                     Location = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     InventoryId = table.Column<int>(nullable: true),
-                    CharacterSheetId = table.Column<int>(nullable: true)
+                    CharacterSheetId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,7 +201,7 @@ namespace Lotfsd.API.Migrations
                         column: x => x.CharacterSheetId,
                         principalTable: "CharacterSheets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Properties_ItemInstances_InventoryId",
                         column: x => x.InventoryId,
