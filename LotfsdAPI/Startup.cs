@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Lotfsd.API.Models;
-using Lotfsd.Data;
 using Lotfsd.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,11 +13,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using GraphQL.Types;
 using GraphQL.Server;
-using Lotfsd.Types;
 using Lotfsd.Types.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Lotfsd.Types;
+using Lotfsd.Data;
 
 namespace Lotfsd.API
 {
@@ -45,7 +45,7 @@ namespace Lotfsd.API
       services.Configure<DatabaseSettings>(
           Configuration.GetSection(nameof(DatabaseSettings)));
 
-      services.AddSingleton<DatabaseSettings>(sp =>
+      services.AddSingleton(sp =>
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
         conf.ConnectionString = Configuration["dbconnection"];
@@ -56,6 +56,7 @@ namespace Lotfsd.API
       services.AddDbContext<LotfsdContext>(
           options => options.UseNpgsql(Configuration.GetConnectionString("LotfsdConnection"))
       );
+      services.AddScoped<DataStore>();
 
       services.AddHttpContextAccessor();
 
@@ -83,9 +84,13 @@ namespace Lotfsd.API
           };
         });
 
-      services.AddSingleton<LotfsdQuery>();
-      services.AddSingleton<LotfsdMutation>();
-      services.AddSingleton<ISchema, LotfsdSchema>();
+      services.AddSingleton<EffectInputType>();
+      services.AddSingleton<CharacterSheetInputType>();
+      services.AddSingleton<EffectType>();
+      services.AddScoped<CharacterSheetType>();
+      services.AddScoped<LotfsdQuery>();
+      services.AddScoped<LotfsdMutation>();
+      services.AddScoped<ISchema, LotfsdSchema>();
 
       services.AddGraphQL(_ =>
       {

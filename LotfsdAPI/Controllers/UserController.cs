@@ -43,7 +43,8 @@ namespace Lotfsd.API.Controllers
         {
           user = new User
           {
-            UserName = model.Username
+            UserName = model.Username,
+            Guid = Guid.NewGuid().ToString()
           };
 
           await _userManager.CreateAsync(user, model.Password);
@@ -67,7 +68,7 @@ namespace Lotfsd.API.Controllers
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Guid)
             }),
           Expires = DateTime.UtcNow.AddDays(7),
           SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

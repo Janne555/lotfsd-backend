@@ -34,14 +34,8 @@ namespace Lotfsd.API.Models
 
     public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
-      try
-      {
-        return await _lotfsdContext.Users.FindAsync(Int32.Parse(userId));
-      }
-      catch
-      {
-        return null;
-      }
+      int.TryParse(userId, out int id);
+      return await _lotfsdContext.Users.FindAsync(id);
     }
 
     public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)

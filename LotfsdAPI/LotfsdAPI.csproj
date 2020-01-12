@@ -9,7 +9,6 @@
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'LotfsdAPI' ">
     <StartAction>Project</StartAction>
-    <LaunchBrowser></LaunchBrowser>
   </PropertyGroup>
   <ItemGroup>
   </ItemGroup>

@@ -12,7 +12,7 @@ namespace Lotfsd.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -24,8 +24,7 @@ namespace Lotfsd.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(nullable: true),
                     NormalizedUserName = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: true)
@@ -40,7 +39,7 @@ namespace Lotfsd.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: true),
                     Experience = table.Column<int>(nullable: false),
                     Class = table.Column<string>(nullable: true),
@@ -82,14 +81,15 @@ namespace Lotfsd.API.Migrations
                     ImprovedParry = table.Column<bool>(nullable: false),
                     Press = table.Column<bool>(nullable: false),
                     Defensive = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: true)
+                    UserId = table.Column<int>(nullable: false),
+                    UserId1 = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CharacterSheets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CharacterSheets_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_CharacterSheets_Users_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -100,12 +100,12 @@ namespace Lotfsd.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Type = table.Column<string>(nullable: true),
                     Target = table.Column<string>(nullable: true),
                     Method = table.Column<string>(nullable: true),
                     Value = table.Column<int>(nullable: false),
-                    CharacterSheetId = table.Column<int>(nullable: true)
+                    CharacterSheetId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,7 +115,7 @@ namespace Lotfsd.API.Migrations
                         column: x => x.CharacterSheetId,
                         principalTable: "CharacterSheets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -123,7 +123,7 @@ namespace Lotfsd.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ItemId = table.Column<int>(nullable: true),
                     Equipped = table.Column<bool>(nullable: false),
                     CharacterSheetId = table.Column<int>(nullable: true)
@@ -150,7 +150,7 @@ namespace Lotfsd.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: true),
                     Position = table.Column<string>(nullable: true),
                     Class = table.Column<string>(nullable: true),
@@ -176,7 +176,7 @@ namespace Lotfsd.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: true),
                     Value = table.Column<int>(nullable: false),
                     Rent = table.Column<int>(nullable: false),
@@ -203,9 +203,9 @@ namespace Lotfsd.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterSheets_UserId",
+                name: "IX_CharacterSheets_UserId1",
                 table: "CharacterSheets",
-                column: "UserId");
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Effects_CharacterSheetId",

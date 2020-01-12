@@ -15,7 +15,7 @@ namespace Lotfsd.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -24,7 +24,7 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("Age")
                         .HasColumnType("integer");
@@ -146,15 +146,18 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Tinkering")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("text");
 
                     b.Property<int>("Wisdom")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("CharacterSheets");
                 });
@@ -164,9 +167,9 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("CharacterSheetId")
+                    b.Property<int>("CharacterSheetId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Method")
@@ -193,7 +196,7 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -208,7 +211,7 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int?>("CharacterSheetId")
                         .HasColumnType("integer");
@@ -233,7 +236,7 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int?>("CharacterSheetId")
                         .HasColumnType("integer");
@@ -270,7 +273,7 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int?>("CharacterSheetId")
                         .HasColumnType("integer");
@@ -305,10 +308,8 @@ namespace Lotfsd.API.Migrations
 
             modelBuilder.Entity("Lotfsd.Data.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("text");
@@ -326,16 +327,18 @@ namespace Lotfsd.API.Migrations
 
             modelBuilder.Entity("Lotfsd.Data.Models.CharacterSheet", b =>
                 {
-                    b.HasOne("Lotfsd.Data.Models.User", null)
+                    b.HasOne("Lotfsd.Data.Models.User", "User")
                         .WithMany("Characters")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.Effect", b =>
                 {
-                    b.HasOne("Lotfsd.Data.Models.CharacterSheet", null)
+                    b.HasOne("Lotfsd.Data.Models.CharacterSheet", "CharacterSheet")
                         .WithMany("Effects")
-                        .HasForeignKey("CharacterSheetId");
+                        .HasForeignKey("CharacterSheetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.ItemInstance", b =>
