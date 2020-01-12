@@ -9,8 +9,7 @@ namespace Lotfsd.Types.Models
     public ItemInstanceType()
     {
       Name = "ItemInstance";
-      Field(x => x.ItemId);
-      Field(x => x.Id);
+      Field(x => x.Guid).Name("Id");
       Field(x => x.Equipped);
     }
   }
@@ -20,8 +19,7 @@ namespace Lotfsd.Types.Models
     public ItemInstanceInputType()
     {
       Name = "ItemInstanceInput";
-      Field(x => x.ItemId);
-      Field(x => x.Id);
+      Field(x => x.Guid).Name("Id");
       Field(x => x.Equipped);
     }
   }

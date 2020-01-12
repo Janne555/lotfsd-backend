@@ -2,7 +2,7 @@ using GraphQL.Types;
 using GraphQL.Utilities;
 using System;
 
-namespace Lotfsd.Types.Models
+namespace Lotfsd.Types
 {
   public class LotfsdSchema : Schema
   {

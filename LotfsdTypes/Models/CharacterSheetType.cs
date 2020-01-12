@@ -1,23 +1,18 @@
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using GraphQL.Types;
 using Lotfsd.Data.Models;
+using System.Linq;
 
 namespace Lotfsd.Types.Models
 {
 
-  public class CharacterSheetType<T> : ObjectGraphType<T> where T : ICharacterSheet
+  public class CharacterSheetType : ObjectGraphType<CharacterSheet>
   {
-    public CharacterSheetType()
+    public CharacterSheetType(LotfsdContext lotfsdContext)
     {
-      Field(x => x.Id);
-      Field(x => x.CharacterId);
-    }
-  }
-
-  public class InfoType : CharacterSheetType<Info>
-  {
-    public InfoType()
-    {
-      Name = "Info";
+      Name = "CharacterSheet";
+      Field(x => x.Guid).Name("Id");
       Field(x => x.Name);
       Field(x => x.Experience);
       Field(x => x.Class);
@@ -25,61 +20,21 @@ namespace Lotfsd.Types.Models
       Field(x => x.Age);
       Field(x => x.Gender);
       Field(x => x.Alignment);
-      Field(x => x.Player);
       Field(x => x.AttackBonus);
       Field(x => x.CurrentHp);
       Field(x => x.MaxHp);
       Field(x => x.SurpriseChance);
-    }
-  }
-
-
-  public class AttributesType : CharacterSheetType<Attributes>
-  {
-    public AttributesType()
-    {
-      Name = "Attributes";
       Field(x => x.Charisma);
       Field(x => x.Constitution);
       Field(x => x.Dexterity);
       Field(x => x.Intelligence);
       Field(x => x.Strength);
       Field(x => x.Wisdom);
-    }
-  }
-
-  public class AttributeModifiersType : CharacterSheetType<AttributeModifiers>
-  {
-    public AttributeModifiersType()
-    {
-      Name = "AttributeModifiers";
-      Field(x => x.Charisma);
-      Field(x => x.Constitution);
-      Field(x => x.Dexterity);
-      Field(x => x.Intelligence);
-      Field(x => x.Strength);
-      Field(x => x.Wisdom);
-    }
-  }
-
-  public class SavingThrowsType : CharacterSheetType<SavingThrows>
-  {
-    public SavingThrowsType()
-    {
-      Name = "SavingThrows";
       Field(x => x.Paralyze);
       Field(x => x.Poison);
       Field(x => x.BreathWeapon);
       Field(x => x.MagicalDevice);
       Field(x => x.Magic);
-    }
-  }
-
-  public class CommonActivitiesType : CharacterSheetType<CommonActivities>
-  {
-    public CommonActivitiesType()
-    {
-      Name = "CommonActivities";
       Field(x => x.Architecture);
       Field(x => x.Bushcraft);
       Field(x => x.Climbing);
@@ -90,57 +45,91 @@ namespace Lotfsd.Types.Models
       Field(x => x.SneakAttack);
       Field(x => x.Stealth);
       Field(x => x.Tinkering);
-    }
-  }
-
-  public class WalletType : CharacterSheetType<Wallet>
-  {
-    public WalletType()
-    {
-      Name = "Wallet";
       Field(x => x.Copper);
       Field(x => x.Silver);
       Field(x => x.Gold);
-    }
-  }
-
-  public class EffectType : CharacterSheetType<Effect>
-  {
-    public EffectType()
-    {
-      Name = "Effect";
-      Field(x => x.Type);
-      Field(x => x.Target);
-      Field(x => x.Method);
-      Field(x => x.Value);
-    }
-  }
-
-  public class RetainerType : CharacterSheetType<Retainer>
-  {
-    public RetainerType()
-    {
-      Name = "Retainer";
-      Field(x => x.Name);
-      Field(x => x.Position);
-      Field(x => x.Class);
-      Field(x => x.Level);
-      Field(x => x.Hitpoints);
-      Field(x => x.Wage);
-      Field(x => x.Share);
-    }
-  }
-
-  public class CombatOptionsType : CharacterSheetType<CombatOptions>
-  {
-    public CombatOptionsType()
-    {
-      Name = "CombatOptions";
       Field(x => x.Standard);
       Field(x => x.Parry);
       Field(x => x.ImprovedParry);
       Field(x => x.Press);
       Field(x => x.Defensive);
+
+      //  TODO solve n+1
+      Field<ListGraphType<EffectType>, List<Effect>>()
+         .Name("Effects")
+         .ResolveAsync(ctx =>
+         {
+           return lotfsdContext.Effects.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToListAsync();
+         });
+
+      Field<ListGraphType<RetainerType>, List<Retainer>>()
+         .Name("Retainers")
+         .ResolveAsync(ctx =>
+         {
+           return lotfsdContext.Retainers.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToListAsync();
+         });
+
+      Field<ListGraphType<PropertyType>, List<Property>>()
+         .Name("Retainers")
+         .ResolveAsync(ctx =>
+         {
+           return lotfsdContext.Properties.Where(effect => effect.CharacterSheetId == ctx.Source.Id).ToListAsync();
+         });
+
+    }
+  }
+
+  public class CharacterSheetInputType : InputObjectGraphType<CharacterSheet>
+  {
+    public CharacterSheetInputType()
+    {
+      Name = "CharacterSheetInput";
+      Field(x => x.Name);
+      Field(x => x.Experience);
+      Field(x => x.Class);
+      Field(x => x.Race);
+      Field(x => x.Age);
+      Field(x => x.Gender);
+      Field(x => x.Alignment);
+      Field(x => x.AttackBonus);
+      Field(x => x.CurrentHp);
+      Field(x => x.MaxHp);
+      Field(x => x.SurpriseChance);
+      Field(x => x.Charisma);
+      Field(x => x.Constitution);
+      Field(x => x.Dexterity);
+      Field(x => x.Intelligence);
+      Field(x => x.Strength);
+      Field(x => x.Wisdom);
+      Field(x => x.Paralyze);
+      Field(x => x.Poison);
+      Field(x => x.BreathWeapon);
+      Field(x => x.MagicalDevice);
+      Field(x => x.Magic);
+      Field(x => x.Architecture);
+      Field(x => x.Bushcraft);
+      Field(x => x.Climbing);
+      Field(x => x.Languages);
+      Field(x => x.OpenDoors);
+      Field(x => x.Search);
+      Field(x => x.SleightOfHand);
+      Field(x => x.SneakAttack);
+      Field(x => x.Stealth);
+      Field(x => x.Tinkering);
+      Field(x => x.Copper);
+      Field(x => x.Silver);
+      Field(x => x.Gold);
+      Field(x => x.Standard);
+      Field(x => x.Parry);
+      Field(x => x.ImprovedParry);
+      Field(x => x.Press);
+      Field(x => x.Defensive);
+      Field<ListGraphType<EffectInputType>, List<Effect>>()
+        .Name("Effects");
+      Field<ListGraphType<RetainerInputType>, List<Retainer>>()
+        .Name("Effects");
+      Field<ListGraphType<PropertyInputType>, List<Property>>()
+        .Name("Effects");
     }
   }
 }

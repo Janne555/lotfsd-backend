@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Lotfsd.Data.Models
@@ -5,6 +6,7 @@ namespace Lotfsd.Data.Models
   public class CharacterSheet
   {
     public int Id { get; set; }
+    public string Guid { get; set; }
     public string Name { get; set; }
     public int Experience { get; set; }
     public string Class { get; set; }
@@ -12,7 +14,6 @@ namespace Lotfsd.Data.Models
     public int Age { get; set; }
     public string Gender { get; set; }
     public string Alignment { get; set; }
-    public string Player { get; set; }
     public int AttackBonus { get; set; }
     public int CurrentHp { get; set; }
     public int MaxHp { get; set; }
@@ -46,6 +47,9 @@ namespace Lotfsd.Data.Models
     public bool ImprovedParry { get; set; }
     public bool Press { get; set; }
     public bool Defensive { get; set; }
+
+    public Guid UserId { get; set; }
+    public User User { get; set; }
 
     public List<Effect> Effects { get; set; }
     public List<Retainer> Retainers { get; set; }

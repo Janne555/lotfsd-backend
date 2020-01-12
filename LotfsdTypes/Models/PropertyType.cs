@@ -9,8 +9,7 @@ namespace Lotfsd.Types.Models
     public PropertyType()
     {
       Name = "Property";
-      Field(x => x.Id);
-      Field(x => x.Owner);
+      Field(x => x.Guid).Name("Id");
       Field(x => x.Name);
       Field(x => x.Value);
       Field(x => x.Rent);
@@ -25,8 +24,7 @@ namespace Lotfsd.Types.Models
     public PropertyInputType()
     {
       Name = "PropertyInput";
-      Field(x => x.Id);
-      Field(x => x.Owner);
+      Field(x => x.Guid).Name("Id");
       Field(x => x.Name);
       Field(x => x.Value);
       Field(x => x.Rent);
