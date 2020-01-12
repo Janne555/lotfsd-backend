@@ -127,9 +127,9 @@ namespace Lotfsd.Types.Models
       Field<ListGraphType<EffectInputType>, List<Effect>>()
         .Name("Effects");
       Field<ListGraphType<RetainerInputType>, List<Retainer>>()
-        .Name("Effects");
+        .Name("Retainers");
       Field<ListGraphType<PropertyInputType>, List<Property>>()
-        .Name("Effects");
+        .Name("Properties");
     }
   }
 }
