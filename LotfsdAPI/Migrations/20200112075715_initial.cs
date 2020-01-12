@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Lotfsd.API.Migrations
@@ -7,12 +8,16 @@ namespace Lotfsd.API.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:uuid-ossp", ",,");
+
             migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -24,7 +29,9 @@ namespace Lotfsd.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<Guid>(nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     UserName = table.Column<string>(nullable: true),
                     NormalizedUserName = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: true)
@@ -40,6 +47,7 @@ namespace Lotfsd.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
                     Name = table.Column<string>(nullable: true),
                     Experience = table.Column<int>(nullable: false),
                     Class = table.Column<string>(nullable: true),
@@ -81,18 +89,17 @@ namespace Lotfsd.API.Migrations
                     ImprovedParry = table.Column<bool>(nullable: false),
                     Press = table.Column<bool>(nullable: false),
                     Defensive = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CharacterSheets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CharacterSheets_Users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_CharacterSheets_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,6 +108,7 @@ namespace Lotfsd.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
                     Type = table.Column<string>(nullable: true),
                     Target = table.Column<string>(nullable: true),
                     Method = table.Column<string>(nullable: true),
@@ -124,6 +132,7 @@ namespace Lotfsd.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
                     ItemId = table.Column<int>(nullable: true),
                     Equipped = table.Column<bool>(nullable: false),
                     CharacterSheetId = table.Column<int>(nullable: true)
@@ -151,6 +160,7 @@ namespace Lotfsd.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
                     Name = table.Column<string>(nullable: true),
                     Position = table.Column<string>(nullable: true),
                     Class = table.Column<string>(nullable: true),
@@ -177,6 +187,7 @@ namespace Lotfsd.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
                     Name = table.Column<string>(nullable: true),
                     Value = table.Column<int>(nullable: false),
                     Rent = table.Column<int>(nullable: false),
@@ -203,9 +214,15 @@ namespace Lotfsd.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterSheets_UserId1",
+                name: "IX_CharacterSheets_Guid",
                 table: "CharacterSheets",
-                column: "UserId1");
+                column: "Guid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterSheets_UserId",
+                table: "CharacterSheets",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Effects_CharacterSheetId",
@@ -213,9 +230,21 @@ namespace Lotfsd.API.Migrations
                 column: "CharacterSheetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Effects_Guid",
+                table: "Effects",
+                column: "Guid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ItemInstances_CharacterSheetId",
                 table: "ItemInstances",
                 column: "CharacterSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemInstances_Guid",
+                table: "ItemInstances",
+                column: "Guid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemInstances_ItemId",
@@ -223,9 +252,21 @@ namespace Lotfsd.API.Migrations
                 column: "ItemId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Items_Guid",
+                table: "Items",
+                column: "Guid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Properties_CharacterSheetId",
                 table: "Properties",
                 column: "CharacterSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Properties_Guid",
+                table: "Properties",
+                column: "Guid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Properties_InventoryId",
@@ -236,6 +277,18 @@ namespace Lotfsd.API.Migrations
                 name: "IX_Retainers_CharacterSheetId",
                 table: "Retainers",
                 column: "CharacterSheetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Retainers_Guid",
+                table: "Retainers",
+                column: "Guid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Guid",
+                table: "Users",
+                column: "Guid",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -15,6 +15,7 @@ namespace Lotfsd.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:PostgresExtension:uuid-ossp", ",,")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
@@ -76,6 +77,11 @@ namespace Lotfsd.API.Migrations
 
                     b.Property<int>("Gold")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<bool>("ImprovedParry")
                         .HasColumnType("boolean");
@@ -149,15 +155,15 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("text");
-
                     b.Property<int>("Wisdom")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacterSheets");
                 });
@@ -171,6 +177,11 @@ namespace Lotfsd.API.Migrations
 
                     b.Property<int>("CharacterSheetId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("Method")
                         .HasColumnType("text");
@@ -188,6 +199,9 @@ namespace Lotfsd.API.Migrations
 
                     b.HasIndex("CharacterSheetId");
 
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
                     b.ToTable("Effects");
                 });
 
@@ -198,10 +212,18 @@ namespace Lotfsd.API.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Guid")
+                        .IsUnique();
 
                     b.ToTable("Items");
                 });
@@ -219,12 +241,20 @@ namespace Lotfsd.API.Migrations
                     b.Property<bool>("Equipped")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
                     b.Property<int?>("ItemId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CharacterSheetId");
+
+                    b.HasIndex("Guid")
+                        .IsUnique();
 
                     b.HasIndex("ItemId");
 
@@ -243,6 +273,11 @@ namespace Lotfsd.API.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
+
+                    b.Property<string>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<int?>("InventoryId")
                         .HasColumnType("integer");
@@ -263,6 +298,9 @@ namespace Lotfsd.API.Migrations
 
                     b.HasIndex("CharacterSheetId");
 
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
                     b.HasIndex("InventoryId");
 
                     b.ToTable("Properties");
@@ -280,6 +318,11 @@ namespace Lotfsd.API.Migrations
 
                     b.Property<string>("Class")
                         .HasColumnType("text");
+
+                    b.Property<string>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<int>("Hitpoints")
                         .HasColumnType("integer");
@@ -303,13 +346,23 @@ namespace Lotfsd.API.Migrations
 
                     b.HasIndex("CharacterSheetId");
 
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
                     b.ToTable("Retainers");
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("text");
@@ -322,6 +375,9 @@ namespace Lotfsd.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
@@ -329,7 +385,9 @@ namespace Lotfsd.API.Migrations
                 {
                     b.HasOne("Lotfsd.Data.Models.User", "User")
                         .WithMany("Characters")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.Effect", b =>
