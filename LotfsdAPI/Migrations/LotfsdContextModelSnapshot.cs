@@ -152,8 +152,8 @@ namespace Lotfsd.API.Migrations
                     b.Property<int>("Tinkering")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Wisdom")
                         .HasColumnType("integer");
@@ -354,12 +354,7 @@ namespace Lotfsd.API.Migrations
 
             modelBuilder.Entity("Lotfsd.Data.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<Guid>("Guid")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
@@ -374,9 +369,6 @@ namespace Lotfsd.API.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Guid")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

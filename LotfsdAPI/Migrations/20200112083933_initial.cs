@@ -29,9 +29,7 @@ namespace Lotfsd.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Guid = table.Column<Guid>(nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    Id = table.Column<Guid>(nullable: false, defaultValueSql: "uuid_generate_v4()"),
                     UserName = table.Column<string>(nullable: true),
                     NormalizedUserName = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: true)
@@ -89,7 +87,7 @@ namespace Lotfsd.API.Migrations
                     ImprovedParry = table.Column<bool>(nullable: false),
                     Press = table.Column<bool>(nullable: false),
                     Defensive = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -281,12 +279,6 @@ namespace Lotfsd.API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Retainers_Guid",
                 table: "Retainers",
-                column: "Guid",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Guid",
-                table: "Users",
                 column: "Guid",
                 unique: true);
         }
