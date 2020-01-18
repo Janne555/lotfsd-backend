@@ -54,7 +54,9 @@ namespace Lotfsd.API
       });
 
       services.AddDbContext<LotfsdContext>(
-          options => options.UseNpgsql(Configuration.GetConnectionString("LotfsdConnection"))
+          options => options
+            .UseNpgsql(Configuration.GetConnectionString("LotfsdConnection"))
+            .EnableSensitiveDataLogging()
       );
       services.AddScoped<DataStore>();
 

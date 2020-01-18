@@ -31,7 +31,7 @@ namespace Lotfsd.Types
           var id = context.GetArgument<string>("id");
           var userContext = context.UserContext as GraphQLUserContext;
           var userId = userContext.User.FindFirst(ClaimTypes.Name).Value;
-          return dataStore.GetCharacterSheet(Guid.Parse(userId), Guid.Parse(id));
+          return dataStore.GetCharacterSheet(Guid.Parse(userId), id);
         });
     }
   }

@@ -42,11 +42,11 @@ namespace Lotfsd.Data
         .ToList();
     }
 
-    public CharacterSheet GetCharacterSheet(Guid userId, Guid characterSheetId)
+    public CharacterSheet GetCharacterSheet(Guid userId, string characterSheetId)
     {
-      return _lotfsdContext
-        .CharacterSheets
-        .Where(ch => ch.UserId.Equals(userId) && ch.Guid.Equals(characterSheetId))
+      return _lotfsdContext.CharacterSheets
+        .Where(x => x.UserId.Equals(userId))
+        .Where(x => x.Guid == characterSheetId)
         .Include(ch => ch.Inventory)
         .Include(ch => ch.Properties)
         .Include(ch => ch.Retainers)
