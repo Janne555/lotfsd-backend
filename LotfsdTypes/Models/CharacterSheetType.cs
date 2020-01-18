@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using GraphQL.Types;
 using Lotfsd.Data.Models;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Lotfsd.Types.Models
 {
@@ -111,6 +112,54 @@ namespace Lotfsd.Types.Models
         .Name("Retainers");
       Field<ListGraphType<PropertyInputType>, List<Property>>()
         .Name("Properties");
+    }
+  }
+
+  public class CharacterSheetUpdateType : InputObjectGraphType<CharacterSheet>
+  {
+    public CharacterSheetUpdateType()
+    {
+      Name = "CharacterSheetUpdate";
+      Field(x => x.Name, nullable: true);
+      Field(x => x.Experience, nullable: true);
+      Field(x => x.Class, nullable: true);
+      Field(x => x.Race, nullable: true);
+      Field(x => x.Age, nullable: true);
+      Field(x => x.Gender, nullable: true);
+      Field(x => x.Alignment, nullable: true);
+      Field(x => x.AttackBonus, nullable: true);
+      Field(x => x.CurrentHp, nullable: true);
+      Field(x => x.MaxHp, nullable: true);
+      Field(x => x.SurpriseChance, nullable: true);
+      Field(x => x.Charisma, nullable: true);
+      Field(x => x.Constitution, nullable: true);
+      Field(x => x.Dexterity, nullable: true);
+      Field(x => x.Intelligence, nullable: true);
+      Field(x => x.Strength, nullable: true);
+      Field(x => x.Wisdom, nullable: true);
+      Field(x => x.Paralyze, nullable: true);
+      Field(x => x.Poison, nullable: true);
+      Field(x => x.BreathWeapon, nullable: true);
+      Field(x => x.MagicalDevice, nullable: true);
+      Field(x => x.Magic, nullable: true);
+      Field(x => x.Architecture, nullable: true);
+      Field(x => x.Bushcraft, nullable: true);
+      Field(x => x.Climbing, nullable: true);
+      Field(x => x.Languages, nullable: true);
+      Field(x => x.OpenDoors, nullable: true);
+      Field(x => x.Search, nullable: true);
+      Field(x => x.SleightOfHand, nullable: true);
+      Field(x => x.SneakAttack, nullable: true);
+      Field(x => x.Stealth, nullable: true);
+      Field(x => x.Tinkering, nullable: true);
+      Field(x => x.Copper, nullable: true);
+      Field(x => x.Silver, nullable: true);
+      Field(x => x.Gold, nullable: true);
+      Field(x => x.Standard, nullable: true);
+      Field(x => x.Parry, nullable: true);
+      Field(x => x.ImprovedParry, nullable: true);
+      Field(x => x.Press, nullable: true);
+      Field(x => x.Defensive, nullable: true);
     }
   }
 }

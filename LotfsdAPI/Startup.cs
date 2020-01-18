@@ -86,6 +86,7 @@ namespace Lotfsd.API
           };
         });
 
+      services.AddSingleton<CharacterSheetUpdateType>();
       services.AddSingleton<ItemInstanceType>();
       services.AddSingleton<ItemInstanceInputType>();
       services.AddSingleton<PropertyType>();
