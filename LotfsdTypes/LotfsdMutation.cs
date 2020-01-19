@@ -41,7 +41,7 @@ namespace Lotfsd.Types
           var characterSheetId = context.GetArgument<string>("id");
           return dataStore.DeleteCharacterSheet(Guid.Parse(userId), characterSheetId);
         });
-      
+
       Field<NonNullGraphType<CharacterSheetType>>(
         "updateCharacterSheet",
         arguments: new QueryArguments(
@@ -53,6 +53,17 @@ namespace Lotfsd.Types
           var characterSheet = context.GetArgument<dynamic>("characterSheet");
           var characterSheetId = context.GetArgument<string>("id");
           return dataStore.UpdateCharacterSheet(characterSheet, characterSheetId);
+        });
+
+      Field<NonNullGraphType<ItemType>>(
+        "createItem",
+        arguments: new QueryArguments(
+          new QueryArgument<ItemInputType> { Name = "item" }
+          ),
+        resolve: context =>
+        {
+          var item = context.GetArgument<Item>("item");
+          return dataStore.CreateItem(item);
         });
     }
   }

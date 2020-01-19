@@ -96,5 +96,13 @@ namespace Lotfsd.Data
       _lotfsdContext.SaveChanges();
       return characterSheet;
     }
+
+
+    public Item CreateItem(Item item)
+    {
+      _lotfsdContext.Add(item);
+      _lotfsdContext.SaveChanges();
+      return item;
+    }
   }
 }

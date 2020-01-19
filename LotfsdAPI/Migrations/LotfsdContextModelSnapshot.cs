@@ -209,12 +209,45 @@ namespace Lotfsd.API.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Guid")
+                    b.Property<int>("AttackBonus")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BaseArmorClass")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Damage")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Encumbrance")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EncumbrancePoints")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
+                        .HasColumnType("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
 
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RangeLong")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RangeMedium")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RangeShort")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StackSize")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -223,6 +256,40 @@ namespace Lotfsd.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("Lotfsd.Data.Models.ItemEffect", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<Guid>("Guid")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v4()");
+
+                    b.Property<int?>("ItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Method")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Target")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Guid")
+                        .IsUnique();
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("ItemEffects");
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.ItemInstance", b =>
@@ -386,6 +453,13 @@ namespace Lotfsd.API.Migrations
                         .HasForeignKey("CharacterSheetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Lotfsd.Data.Models.ItemEffect", b =>
+                {
+                    b.HasOne("Lotfsd.Data.Models.Item", null)
+                        .WithMany("Effects")
+                        .HasForeignKey("ItemId");
                 });
 
             modelBuilder.Entity("Lotfsd.Data.Models.ItemInstance", b =>

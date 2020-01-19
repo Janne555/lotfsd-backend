@@ -54,10 +54,10 @@ namespace Lotfsd.Types.Models
       Field(x => x.ImprovedParry);
       Field(x => x.Press);
       Field(x => x.Defensive);
-      Field<ListGraphType<EffectType>, List<Effect>>("Effects");
-      Field<ListGraphType<RetainerType>, List<Retainer>>("Retainers");
-      Field<ListGraphType<PropertyType>, List<Property>>("Properties");
-      Field<ListGraphType<ItemInstanceType>, List<ItemInstance>>("Inventory");
+      Field<NonNullGraphType<ListGraphType<NonNullGraphType<EffectType>>>, List<Effect>>("Effects");
+      Field<NonNullGraphType<ListGraphType<NonNullGraphType<RetainerType>>>, List<Retainer>>("Retainers");
+      Field<NonNullGraphType<ListGraphType<NonNullGraphType<PropertyType>>>, List<Property>>("Properties");
+      Field<NonNullGraphType<ListGraphType<NonNullGraphType<ItemInstanceType>>>, List<ItemInstance>>("Inventory");
     }
   }
 

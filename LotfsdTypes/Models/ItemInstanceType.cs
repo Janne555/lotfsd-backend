@@ -19,7 +19,6 @@ namespace Lotfsd.Types.Models
     public ItemInstanceInputType()
     {
       Name = "ItemInstanceInput";
-      Field(x => x.Guid).Name("Id");
       Field(x => x.Equipped);
     }
   }

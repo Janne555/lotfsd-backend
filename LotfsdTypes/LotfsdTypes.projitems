@@ -18,6 +18,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\ItemInstanceType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\EffectType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\RetainerType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ItemType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ItemEffectType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

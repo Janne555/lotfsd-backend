@@ -15,6 +15,7 @@ namespace Lotfsd.Data.Models
     public DbSet<User> Users { get; set; }
     public DbSet<ItemInstance> ItemInstances { get; set; }
     public DbSet<Item> Items { get; set; }
+    public DbSet<ItemEffect> ItemEffects { get; set; }
     public object Where { get; internal set; }
 
 
@@ -76,6 +77,15 @@ namespace Lotfsd.Data.Models
 
       modelBuilder.HasPostgresExtension("uuid-ossp")
         .Entity<Item>()
+        .Property(x => x.Guid)
+        .HasDefaultValueSql("uuid_generate_v4()");
+
+      modelBuilder.Entity<ItemEffect>()
+        .HasIndex(x => x.Guid)
+        .IsUnique();
+
+      modelBuilder.HasPostgresExtension("uuid-ossp")
+        .Entity<ItemEffect>()
         .Property(x => x.Guid)
         .HasDefaultValueSql("uuid_generate_v4()");
     }

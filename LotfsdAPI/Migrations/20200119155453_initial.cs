@@ -17,8 +17,19 @@ namespace Lotfsd.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Guid = table.Column<string>(nullable: true, defaultValueSql: "uuid_generate_v4()"),
-                    Name = table.Column<string>(nullable: true)
+                    Guid = table.Column<Guid>(nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    Name = table.Column<string>(nullable: true),
+                    StackSize = table.Column<int>(nullable: false),
+                    EncumbrancePoints = table.Column<int>(nullable: false),
+                    Encumbrance = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    BaseArmorClass = table.Column<int>(nullable: false),
+                    Type = table.Column<string>(nullable: true),
+                    Damage = table.Column<string>(nullable: true),
+                    AttackBonus = table.Column<int>(nullable: false),
+                    RangeShort = table.Column<int>(nullable: false),
+                    RangeMedium = table.Column<int>(nullable: false),
+                    RangeLong = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,6 +48,29 @@ namespace Lotfsd.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemEffects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Guid = table.Column<Guid>(nullable: false, defaultValueSql: "uuid_generate_v4()"),
+                    Method = table.Column<string>(nullable: true),
+                    Target = table.Column<string>(nullable: true),
+                    Value = table.Column<int>(nullable: false),
+                    ItemId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemEffects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ItemEffects_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,6 +267,17 @@ namespace Lotfsd.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ItemEffects_Guid",
+                table: "ItemEffects",
+                column: "Guid",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemEffects_ItemId",
+                table: "ItemEffects",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ItemInstances_CharacterSheetId",
                 table: "ItemInstances",
                 column: "CharacterSheetId");
@@ -286,6 +331,9 @@ namespace Lotfsd.API.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Effects");
+
+            migrationBuilder.DropTable(
+                name: "ItemEffects");
 
             migrationBuilder.DropTable(
                 name: "Properties");
