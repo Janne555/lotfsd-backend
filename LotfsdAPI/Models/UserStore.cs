@@ -1,22 +1,26 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using LotfsdAPI.Services;
+using Lotfsd.Data.Models;
+using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.API.Models
 {
   public class UserStore : IUserStore<User>, IUserPasswordStore<User>
   {
 
-    private readonly UserService _userService;
+    private readonly LotfsdContext _lotfsdContext;
 
-    public UserStore(UserService userService)
+    public UserStore(LotfsdContext lotfsdContext)
     {
-      _userService = userService;
+      _lotfsdContext = lotfsdContext;
     }
     public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
     {
-      await _userService.CreateUserAsync(user, cancellationToken);
+      await _lotfsdContext.Users.AddAsync(user);
+      await _lotfsdContext.SaveChangesAsync();
       return IdentityResult.Success;
     }
 
@@ -29,14 +33,14 @@ namespace LotfsdAPI.Models
     {
     }
 
-    public Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
+    public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
-      return _userService.FindUserAsync(userId);
+      return await _lotfsdContext.Users.FindAsync(userId);
     }
 
     public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
-      return _userService.FindUserByUsernameAsync(normalizedUserName);
+      return _lotfsdContext.Users.FirstOrDefaultAsync(user => user.NormalizedUserName.Equals(normalizedUserName));
     }
 
     public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
@@ -51,7 +55,7 @@ namespace LotfsdAPI.Models
 
     public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
     {
-      return Task.FromResult(user.Id);
+      return Task.FromResult("not working");
     }
 
     public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
@@ -84,8 +88,8 @@ namespace LotfsdAPI.Models
 
     public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
     {
-
-      await _userService.UpdateUserAsync(user, cancellationToken);
+      _lotfsdContext.Users.Update(user);
+      await _lotfsdContext.SaveChangesAsync();
       return IdentityResult.Success;
     }
   }

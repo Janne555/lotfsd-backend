@@ -1,4 +1,4 @@
-namespace LotfsdAPI.Models
+namespace Lotfsd.API.Models
 {
   public class LoginModel
   {

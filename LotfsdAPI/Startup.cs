@@ -4,17 +4,26 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using LotfsdAPI.Models;
-using LotfsdAPI.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Lotfsd.API.Models;
+using Lotfsd.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Web;
+using GraphQL.Types;
+using GraphQL.Server;
+using Lotfsd.Types.Models;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Lotfsd.Types;
+using Lotfsd.Data;
 
-namespace LotfsdAPI
+namespace Lotfsd.API
 {
   public class Startup
+
   {
     public Startup(IConfiguration configuration)
     {
@@ -26,12 +35,17 @@ namespace LotfsdAPI
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      services.Configure<KestrelServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
+
       string key = Configuration["secret"];
 
       services.Configure<DatabaseSettings>(
           Configuration.GetSection(nameof(DatabaseSettings)));
 
-      services.AddSingleton<IDatabaseSettings>(sp =>
+      services.AddSingleton(sp =>
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
         conf.ConnectionString = Configuration["dbconnection"];
@@ -39,16 +53,20 @@ namespace LotfsdAPI
         return conf;
       });
 
-      services.AddSingleton<MongoService>();
-      services.AddSingleton<UserService>();
-      services.AddSingleton<CharacterSheetService>();
+      services.AddDbContext<LotfsdContext>(
+          options => options
+            .UseNpgsql(Configuration.GetConnectionString("LotfsdConnection"))
+            .EnableSensitiveDataLogging()
+      );
+      services.AddScoped<DataStore>();
+
+      services.AddHttpContextAccessor();
 
       services.AddControllers()
         .AddNewtonsoftJson(Options => Options.UseMemberCasing());
 
       services.AddIdentityCore<User>(options => { });
       services.AddScoped<IUserStore<User>, UserStore>();
-
 
       services.AddAuthentication(options =>
       {
@@ -68,7 +86,42 @@ namespace LotfsdAPI
           };
         });
 
+      services.AddSingleton<ItemInputType>();
+      services.AddSingleton<ItemType>();
+      services.AddSingleton<ItemEffectType>();
+      services.AddSingleton<ItemEffectInputType>();
+      services.AddSingleton<CharacterSheetUpdateType>();
+      services.AddSingleton<ItemInstanceType>();
+      services.AddSingleton<ItemInstanceInputType>();
+      services.AddSingleton<PropertyType>();
+      services.AddSingleton<PropertyInputType>();
+      services.AddSingleton<RetainerType>();
+      services.AddSingleton<RetainerInputType>();
+      services.AddSingleton<EffectInputType>();
+      services.AddSingleton<CharacterSheetInputType>();
+      services.AddSingleton<EffectType>();
+      services.AddScoped<CharacterSheetType>();
+      services.AddScoped<LotfsdQuery>();
+      services.AddScoped<LotfsdMutation>();
+      services.AddScoped<ISchema, LotfsdSchema>();
+
+      services.AddGraphQL(_ =>
+      {
+        _.EnableMetrics = true;
+        _.ExposeExceptions = true;
+      })
+        .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
+
       services.AddControllers();
+    }
+
+
+    private void HandleBranch(IApplicationBuilder app)
+    {
+      app.Run(context =>
+      {
+        return Task.FromResult(context.Response.StatusCode = 401);
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +131,19 @@ namespace LotfsdAPI
       {
         app.UseDeveloperExceptionPage();
       }
+
+      app.Map("/graphql", branch => //https://github.com/graphql-dotnet/server/pull/158#issuecomment-431381490
+      {
+        branch.UseAuthentication();
+        branch.UseCors(x => x
+          .AllowAnyOrigin()
+          .AllowAnyMethod()
+          .AllowAnyHeader());
+
+        branch.MapWhen(context => context.User.FindFirst(ClaimTypes.Name) == null, HandleBranch);
+
+        branch.UseGraphQL<ISchema>("");
+      });
 
       app.UseCors(x => x
                 .AllowAnyOrigin()

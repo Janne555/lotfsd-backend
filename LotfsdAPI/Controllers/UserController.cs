@@ -2,28 +2,30 @@ using System.Security.Claims;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LotfsdAPI.Models;
-using LotfsdAPI.Services;
+using Lotfsd.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Lotfsd.Data.Models;
 
-namespace LotfsdAPI.Controllers
+
+namespace Lotfsd.API.Controllers
 {
   [ApiController]
   [Authorize]
   [Route("api/[controller]")]
   public class UserController : ControllerBase
   {
-    private readonly UserService _userService;
     private readonly UserManager<User> _userManager;
     private readonly string _secret;
 
-    public UserController(UserService userService, UserManager<User> userManager, IDatabaseSettings dbsettings)
+    public UserController(
+      UserManager<User> userManager,
+      DatabaseSettings dbsettings
+      )
     {
-      _userService = userService;
       _userManager = userManager;
       _secret = dbsettings.Secret;
     }
@@ -44,7 +46,7 @@ namespace LotfsdAPI.Controllers
             UserName = model.Username
           };
 
-          var result = await _userManager.CreateAsync(user, model.Password);
+          await _userManager.CreateAsync(user, model.Password);
         }
         return Ok();
       }
@@ -65,15 +67,16 @@ namespace LotfsdAPI.Controllers
         {
           Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+              new Claim(ClaimTypes.Name, user.Id.ToString())
             }),
           Expires = DateTime.UtcNow.AddDays(7),
           SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
+
         return Ok(tokenHandler.WriteToken(token));
       }
-      return Ok();
+      return StatusCode(401);
     }
   }
 }

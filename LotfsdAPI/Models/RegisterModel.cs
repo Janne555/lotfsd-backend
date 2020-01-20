@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LotfsdAPI.Models
+namespace Lotfsd.API.Models
 {
   public class RegisterModel
   {
