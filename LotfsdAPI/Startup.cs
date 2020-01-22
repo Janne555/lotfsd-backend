@@ -40,6 +40,11 @@ namespace Lotfsd.API
         options.AllowSynchronousIO = true;
       });
 
+      services.Configure<IISServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
+
       string key = Configuration["secret"];
 
       services.Configure<DatabaseSettings>(
@@ -55,7 +60,7 @@ namespace Lotfsd.API
 
       services.AddDbContext<LotfsdContext>(
           options => options
-            .UseNpgsql(Configuration.GetConnectionString("LotfsdConnection"))
+            .UseNpgsql(ConnStr.Parse(Configuration["LotfsdConnection"]))
             .EnableSensitiveDataLogging()
       );
       services.AddScoped<DataStore>();
@@ -127,10 +132,7 @@ namespace Lotfsd.API
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
+      app.UseDeveloperExceptionPage();
 
       app.Map("/graphql", branch => //https://github.com/graphql-dotnet/server/pull/158#issuecomment-431381490
       {

@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lotfsd.API.Migrations
 {
     [DbContext(typeof(LotfsdContext))]
-    [Migration("20200119155453_initial")]
+    [Migration("20200122180730_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
