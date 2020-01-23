@@ -23,45 +23,41 @@ using Lotfsd.Data;
 namespace Lotfsd.API
 {
   public class Startup
-
   {
-    public Startup(IConfiguration configuration)
+    public IConfiguration Configuration { get; }
+    public readonly IWebHostEnvironment _env;
+
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
       Configuration = configuration;
+      _env = env;
     }
 
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.Configure<KestrelServerOptions>(options =>
-      {
-        options.AllowSynchronousIO = true;
-      });
-
-      services.Configure<IISServerOptions>(options =>
-      {
-        options.AllowSynchronousIO = true;
-      });
-
-      string key = Configuration["secret"];
-
-      services.Configure<DatabaseSettings>(
-          Configuration.GetSection(nameof(DatabaseSettings)));
+      GraphqlFix(services);
 
       services.AddSingleton(sp =>
       {
         var conf = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-        conf.ConnectionString = Configuration["dbconnection"];
-        conf.Secret = key;
+        conf.Secret = Configuration["secret"];
         return conf;
       });
 
       services.AddDbContext<LotfsdContext>(
-          options => options
-            .UseNpgsql(ConnStr.Parse(Configuration["LotfsdConnection"]))
-            .EnableSensitiveDataLogging()
+          options =>
+          {
+            if (_env.IsDevelopment())
+            {
+              options
+                .UseNpgsql(Configuration["LotfsdConnection"])
+                .EnableSensitiveDataLogging();
+            }
+            else
+            {
+              options.UseNpgsql(ConnStr.Parse(Configuration["LotfsdConnection"]));
+            }
+          }
       );
       services.AddScoped<DataStore>();
 
@@ -73,66 +69,18 @@ namespace Lotfsd.API
       services.AddIdentityCore<User>(options => { });
       services.AddScoped<IUserStore<User>, UserStore>();
 
-      services.AddAuthentication(options =>
-      {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-      })
-        .AddJwtBearer(options =>
-        {
-          options.RequireHttpsMetadata = false;
-          options.SaveToken = true;
-          options.TokenValidationParameters = new TokenValidationParameters
-          {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-          };
-        });
-
-      services.AddSingleton<ItemInputType>();
-      services.AddSingleton<ItemType>();
-      services.AddSingleton<ItemEffectType>();
-      services.AddSingleton<ItemEffectInputType>();
-      services.AddSingleton<CharacterSheetUpdateType>();
-      services.AddSingleton<ItemInstanceType>();
-      services.AddSingleton<ItemInstanceInputType>();
-      services.AddSingleton<PropertyType>();
-      services.AddSingleton<PropertyInputType>();
-      services.AddSingleton<RetainerType>();
-      services.AddSingleton<RetainerInputType>();
-      services.AddSingleton<EffectInputType>();
-      services.AddSingleton<CharacterSheetInputType>();
-      services.AddSingleton<EffectType>();
-      services.AddScoped<CharacterSheetType>();
-      services.AddScoped<LotfsdQuery>();
-      services.AddScoped<LotfsdMutation>();
-      services.AddScoped<ISchema, LotfsdSchema>();
-
-      services.AddGraphQL(_ =>
-      {
-        _.EnableMetrics = true;
-        _.ExposeExceptions = true;
-      })
-        .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
+      ConfigureJWT(services);
+      ConfigureGrapqhl(services);
 
       services.AddControllers();
     }
 
-
-    private void HandleBranch(IApplicationBuilder app)
-    {
-      app.Run(context =>
-      {
-        return Task.FromResult(context.Response.StatusCode = 401);
-      });
-    }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      app.UseDeveloperExceptionPage();
+      if (env.IsDevelopment())
+      {
+        app.UseDeveloperExceptionPage();
+      }
 
       app.Map("/graphql", branch => //https://github.com/graphql-dotnet/server/pull/158#issuecomment-431381490
       {
@@ -163,6 +111,80 @@ namespace Lotfsd.API
       {
         endpoints.MapControllers();
       });
+    }
+
+    private void HandleBranch(IApplicationBuilder app)
+    {
+      app.Run(context =>
+      {
+        return Task.FromResult(context.Response.StatusCode = 401);
+      });
+    }
+
+    private void ConfigureGrapqhl(IServiceCollection services)
+    {
+      services.AddSingleton<ItemInputType>();
+      services.AddSingleton<ItemType>();
+      services.AddSingleton<ItemEffectType>();
+      services.AddSingleton<ItemEffectInputType>();
+      services.AddSingleton<CharacterSheetUpdateType>();
+      services.AddSingleton<ItemInstanceType>();
+      services.AddSingleton<ItemInstanceInputType>();
+      services.AddSingleton<PropertyType>();
+      services.AddSingleton<PropertyInputType>();
+      services.AddSingleton<RetainerType>();
+      services.AddSingleton<RetainerInputType>();
+      services.AddSingleton<EffectInputType>();
+      services.AddSingleton<CharacterSheetInputType>();
+      services.AddSingleton<EffectType>();
+      services.AddScoped<CharacterSheetType>();
+      services.AddScoped<LotfsdQuery>();
+      services.AddScoped<LotfsdMutation>();
+      services.AddScoped<ISchema, LotfsdSchema>();
+
+      services.AddGraphQL(_ =>
+      {
+        _.EnableMetrics = true;
+        _.ExposeExceptions = true;
+      })
+        .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });
+    }
+
+    private void ConfigureJWT(IServiceCollection services)
+    {
+
+      services.AddAuthentication(options =>
+      {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      })
+        .AddJwtBearer(options =>
+        {
+          options.RequireHttpsMetadata = false;
+          options.SaveToken = true;
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["secret"])),
+            ValidateIssuer = false,
+            ValidateAudience = false
+          };
+        });
+
+    }
+
+    private void GraphqlFix(IServiceCollection services)
+    {
+      services.Configure<KestrelServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
+
+      services.Configure<IISServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
+
     }
   }
 }
