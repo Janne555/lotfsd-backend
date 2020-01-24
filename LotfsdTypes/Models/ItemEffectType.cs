@@ -13,6 +13,7 @@ namespace Lotfsd.Types.Models
       Field(x => x.Method);
       Field(x => x.Target);
       Field(x => x.Value);
+      Field(x => x.Type);
     }
   }
 
@@ -24,6 +25,7 @@ namespace Lotfsd.Types.Models
       Field(x => x.Method);
       Field(x => x.Target);
       Field(x => x.Value);
+      Field(x => x.Type);
     }
   }
 }

@@ -8,5 +8,6 @@ namespace Lotfsd.Data.Models
     public string Method { get; set; }
     public string Target { get; set; }
     public int Value { get; set; }
+    public string Type { get; set; }
   }
 }

@@ -76,6 +76,10 @@ namespace Lotfsd.Data
       var characterSheet = _lotfsdContext
         .CharacterSheets
         .Where(ch => ch.Guid.Equals(characterSheetId))
+        .Include(ch => ch.Inventory)
+        .Include(ch => ch.Properties)
+        .Include(ch => ch.Retainers)
+        .Include(ch => ch.Effects)
         .FirstOrDefault();
 
       if (characterSheet == null)

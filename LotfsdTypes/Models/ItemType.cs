@@ -22,7 +22,7 @@ namespace Lotfsd.Types.Models
       Field(x => x.RangeShort, nullable: true);
       Field(x => x.RangeMedium, nullable: true);
       Field(x => x.RangeLong, nullable: true);
-      Field<ListGraphType<ItemEffectType>>("Effects");
+      Field<ListGraphType<NonNullGraphType<ItemEffectType>>>("Effects");
     }
   }
 

@@ -9,7 +9,7 @@ namespace Lotfsd.Data.Models
     public Guid Guid { get; set; }
     public string Name { get; set; }
     public int StackSize { get; set; }
-    public int EncumbrancePoints { get; set; }
+    public Double EncumbrancePoints { get; set; }
     public int Encumbrance { get; set; }
     public string Description { get; set; }
     public int BaseArmorClass { get; set; }
