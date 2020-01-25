@@ -16,6 +16,7 @@ namespace Lotfsd.Data.Models
     public DbSet<ItemInstance> ItemInstances { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<ItemEffect> ItemEffects { get; set; }
+    public DbSet<Language> Languages { get; set; }
     public object Where { get; internal set; }
 
 
@@ -86,6 +87,11 @@ namespace Lotfsd.Data.Models
 
       modelBuilder.HasPostgresExtension("uuid-ossp")
         .Entity<ItemEffect>()
+        .Property(x => x.Guid)
+        .HasDefaultValueSql("uuid_generate_v4()");
+
+      modelBuilder.HasPostgresExtension("uuid-ossp")
+        .Entity<Language>()
         .Property(x => x.Guid)
         .HasDefaultValueSql("uuid_generate_v4()");
     }

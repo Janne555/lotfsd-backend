@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\RetainerType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ItemType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\ItemEffectType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\LanguageType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Models\" />

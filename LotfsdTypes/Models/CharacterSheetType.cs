@@ -58,6 +58,7 @@ namespace Lotfsd.Types.Models
       Field<NonNullGraphType<ListGraphType<NonNullGraphType<RetainerType>>>, List<Retainer>>("Retainers");
       Field<NonNullGraphType<ListGraphType<NonNullGraphType<PropertyType>>>, List<Property>>("Properties");
       Field<NonNullGraphType<ListGraphType<NonNullGraphType<ItemInstanceType>>>, List<ItemInstance>>("Inventory");
+      Field<NonNullGraphType<ListGraphType<NonNullGraphType<LanguageType>>>, List<Language>>("LanguagesList");
     }
   }
 
@@ -112,6 +113,8 @@ namespace Lotfsd.Types.Models
         .Name("Retainers");
       Field<ListGraphType<PropertyInputType>, List<Property>>()
         .Name("Properties");
+      Field<ListGraphType<LanguageInputType>, List<Language>>()
+        .Name("LanguagesList");
     }
   }
 

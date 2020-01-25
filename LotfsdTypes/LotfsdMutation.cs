@@ -65,6 +65,48 @@ namespace Lotfsd.Types
           var item = context.GetArgument<Item>("item");
           return dataStore.CreateItem(item);
         });
+
+      Field<NonNullGraphType<CharacterSheetType>>(
+        "addRetainer",
+        arguments: new QueryArguments(
+          new QueryArgument<NonNullGraphType<RetainerInputType>> { Name = "retainer" },
+          new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "characterSheetId" }
+          ),
+        resolve: context =>
+        {
+          var retainer = context.GetArgument<Retainer>("retainer");
+          var characterSheetId = context.GetArgument<string>("characterSheetId");
+          return dataStore.AddRetainer(retainer, characterSheetId);
+        });
+
+      Field<NonNullGraphType<CharacterSheetType>>(
+        "updateRetainer",
+        arguments: new QueryArguments(
+          new QueryArgument<NonNullGraphType<RetainerUpdateType>> { Name = "retainerUpdate" },
+          new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "characterSheetId" },
+          new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "retainerId" }
+          ),
+        resolve: context =>
+        {
+          var retainerUpdate = context.GetArgument<dynamic>("retainerUpdate");
+          var characterSheetId = context.GetArgument<string>("characterSheetId");
+          var retainerId = context.GetArgument<string>("retainerId");
+          return dataStore.UpdateRetainer(retainerUpdate, retainerId, characterSheetId);
+        });
+
+
+      Field<NonNullGraphType<CharacterSheetType>>(
+        "addLanguage",
+        arguments: new QueryArguments(
+          new QueryArgument<NonNullGraphType<LanguageInputType>> { Name = "language" },
+          new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "characterSheetId" }
+          ),
+        resolve: context =>
+        {
+          var language = context.GetArgument<Language>("language");
+          var characterSheetId = context.GetArgument<string>("characterSheetId");
+          return dataStore.AddLanguage(language, characterSheetId);
+        });
     }
   }
 }

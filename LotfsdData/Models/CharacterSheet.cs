@@ -55,5 +55,6 @@ namespace Lotfsd.Data.Models
     public List<Retainer> Retainers { get; set; }
     public List<ItemInstance> Inventory { get; set; }
     public List<Property> Properties { get; set; }
+    public List<Language> LanguagesList { get; set; }
   }
 }
