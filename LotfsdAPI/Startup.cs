@@ -123,6 +123,9 @@ namespace Lotfsd.API
 
     private void ConfigureGrapqhl(IServiceCollection services)
     {
+      services.AddSingleton<LanguageType>();
+      services.AddSingleton<LanguageInputType>();
+
       services.AddSingleton<ItemInputType>();
       services.AddSingleton<ItemType>();
       services.AddSingleton<ItemEffectType>();
