@@ -108,5 +108,63 @@ namespace Lotfsd.Data
       _lotfsdContext.SaveChanges();
       return item;
     }
+
+    public CharacterSheet AddRetainer(Retainer retainer, string characterSheetId)
+    {
+      var characterSheet = _lotfsdContext
+        .CharacterSheets
+        .Where(x => x.Guid == characterSheetId)
+        .Include(ch => ch.Inventory)
+        .Include(ch => ch.Properties)
+        .Include(ch => ch.Retainers)
+        .Include(ch => ch.Effects)
+        .FirstOrDefault();
+
+      if (characterSheet == null)
+      {
+        throw new Exception("Invalid character id");
+      }
+
+      characterSheet.Retainers.Add(retainer);
+      _lotfsdContext.SaveChanges();
+      return characterSheet;
+    }
+
+    public CharacterSheet UpdateRetainer(dynamic retainerUpdate, string retainerId, string characterSheetId)
+    {
+      var characterSheet = _lotfsdContext
+        .CharacterSheets
+        .Where(ch => ch.Guid.Equals(characterSheetId))
+        .Include(ch => ch.Inventory)
+        .Include(ch => ch.Properties)
+        .Include(ch => ch.Retainers)
+        .Include(ch => ch.Effects)
+        .FirstOrDefault();
+
+      if (characterSheet == null)
+      {
+        throw new Exception("Character sheet not found");
+      }
+
+      var retainer = characterSheet.Retainers.Where(x => x.Guid == retainerId).FirstOrDefault();
+
+      if (retainer == null)
+      {
+        throw new Exception("Retainer not found");
+      }
+
+      var characterSheetType = Type.GetType("Lotfsd.Data.Models.Retainer");
+
+      foreach (var item in retainerUpdate)
+      {
+        string key = item.Key;
+        characterSheetType
+          .GetProperty(char.ToUpper(key[0]) + key.Substring(1))
+          .SetValue(retainer, item.Value);
+      }
+
+      _lotfsdContext.SaveChanges();
+      return characterSheet;
+    }
   }
 }

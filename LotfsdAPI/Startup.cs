@@ -127,13 +127,19 @@ namespace Lotfsd.API
       services.AddSingleton<ItemType>();
       services.AddSingleton<ItemEffectType>();
       services.AddSingleton<ItemEffectInputType>();
+
       services.AddSingleton<CharacterSheetUpdateType>();
+
       services.AddSingleton<ItemInstanceType>();
       services.AddSingleton<ItemInstanceInputType>();
+
       services.AddSingleton<PropertyType>();
       services.AddSingleton<PropertyInputType>();
+
       services.AddSingleton<RetainerType>();
       services.AddSingleton<RetainerInputType>();
+      services.AddSingleton<RetainerUpdateType>();
+
       services.AddSingleton<EffectInputType>();
       services.AddSingleton<CharacterSheetInputType>();
       services.AddSingleton<EffectType>();
