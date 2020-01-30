@@ -1,5 +1,6 @@
 ﻿using System;
 using GraphQL.Types;
+using Lotfsd.Data;
 using Lotfsd.Data.Models;
 
 namespace Lotfsd.Types.Models
@@ -11,6 +12,7 @@ namespace Lotfsd.Types.Models
       Name = "ItemInstance";
       Field(x => x.Guid).Name("Id");
       Field(x => x.Equipped);
+      Field(x => x.ItemGuid).Name("ItemId");
     }
   }
 
@@ -20,6 +22,7 @@ namespace Lotfsd.Types.Models
     {
       Name = "ItemInstanceInput";
       Field(x => x.Equipped);
+      Field(x => x.ItemId);
     }
   }
 }

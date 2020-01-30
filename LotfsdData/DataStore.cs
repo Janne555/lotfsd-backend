@@ -162,12 +162,42 @@ namespace Lotfsd.Data
       return characterSheet;
     }
 
+    public CharacterSheet AddItemInstance(string itemId, bool equipped, string characterSheetId)
+    {
+      var characterSheet = GetByGuid(characterSheetId);
+
+      if (characterSheet == null)
+      {
+        throw new Exception("Invalid character id");
+      }
+
+      var item = _lotfsdContext.Items.Where(x => x.Guid.ToString().Equals(itemId)).FirstOrDefault();
+
+      if (item == null)
+      {
+        throw new Exception("Invalid item id");
+      }
+
+      var itemInstace = new ItemInstance
+      {
+        Equipped = equipped,
+        Item = item,
+        ItemId = item.Id,
+        ItemGuid = item.Guid.ToString(),
+      };
+
+      characterSheet.Inventory.Add(itemInstace);
+      _lotfsdContext.SaveChanges();
+      return characterSheet;
+    }
+
     private CharacterSheet GetByGuid(string guid)
     {
       return _lotfsdContext
         .CharacterSheets
         .Where(x => x.Guid == guid)
         .Include(ch => ch.Inventory)
+          .ThenInclude(it => it.Item)
         .Include(ch => ch.Properties)
         .Include(ch => ch.Retainers)
         .Include(ch => ch.Effects)

@@ -8,6 +8,7 @@ namespace Lotfsd.Data.Models
 
     public int ItemId { get; set; }
     public Item Item { get; set; }
+    public string ItemGuid { get; set; }
 
     public bool Equipped { get; set; }
   }

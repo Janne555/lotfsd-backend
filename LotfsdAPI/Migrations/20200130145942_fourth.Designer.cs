@@ -3,15 +3,17 @@ using System;
 using Lotfsd.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Lotfsd.API.Migrations
 {
     [DbContext(typeof(LotfsdContext))]
-    partial class LotfsdContextModelSnapshot : ModelSnapshot
+    [Migration("20200130145942_fourth")]
+    partial class fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,9 +314,6 @@ namespace Lotfsd.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
                         .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<string>("ItemGuid")
-                        .HasColumnType("text");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("integer");
