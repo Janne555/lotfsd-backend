@@ -122,6 +122,19 @@ namespace Lotfsd.Types
           var characterSheetId = context.GetArgument<string>("characterSheetId");
           return dataStore.AddItemInstance(itemId, equipped, characterSheetId);
         });
+
+      Field<NonNullGraphType<CharacterSheetType>>(
+        "addProperty",
+        arguments: new QueryArguments(
+          new QueryArgument<NonNullGraphType<PropertyInputType>> { Name = "property" },
+          new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "characterSheetId" }
+          ),
+        resolve: context =>
+        {
+          var property = context.GetArgument<Property>("property");
+          var characterSheetId = context.GetArgument<string>("characterSheetId");
+          return dataStore.AddProperty(property, characterSheetId);
+        });
     }
   }
 }

@@ -191,6 +191,20 @@ namespace Lotfsd.Data
       return characterSheet;
     }
 
+    public CharacterSheet AddProperty(Property property, string characterSheetId)
+    {
+      var characterSheet = GetByGuid(characterSheetId);
+
+      if (characterSheet == null)
+      {
+        throw new Exception("Invalid character id");
+      }
+
+      characterSheet.Properties.Add(property);
+      _lotfsdContext.SaveChanges();
+      return characterSheet;
+    }
+
     private CharacterSheet GetByGuid(string guid)
     {
       return _lotfsdContext
