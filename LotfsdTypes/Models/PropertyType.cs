@@ -24,7 +24,6 @@ namespace Lotfsd.Types.Models
     public PropertyInputType()
     {
       Name = "PropertyInput";
-      Field(x => x.Guid).Name("Id");
       Field(x => x.Name);
       Field(x => x.Value);
       Field(x => x.Rent);
