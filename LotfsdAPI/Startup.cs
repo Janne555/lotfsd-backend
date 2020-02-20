@@ -153,7 +153,6 @@ namespace Lotfsd.API
 
       services.AddGraphQL(_ =>
       {
-        _.EnableMetrics = true;
         _.ExposeExceptions = true;
       })
         .AddUserContextBuilder(httpContext => new GraphQLUserContext { User = httpContext.User });

@@ -25,10 +25,10 @@ namespace Lotfsd.Types.Models
     {
       Name = "PropertyInput";
       Field(x => x.Name);
-      Field(x => x.Value);
-      Field(x => x.Rent);
-      Field(x => x.Location);
-      Field(x => x.Description);
+      Field(x => x.Value, nullable: true);
+      Field(x => x.Rent, nullable: true);
+      Field(x => x.Location, nullable: true);
+      Field(x => x.Description, nullable: true);
       Field<ListGraphType<ItemInstanceInputType>>("Inventory");
     }
   }
